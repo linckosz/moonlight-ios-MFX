@@ -32,6 +32,8 @@
 
 #if !TARGET_OS_TV
 - (void) updateCursorLocation:(CGPoint)location isMouse:(BOOL)isMouse;
+- (CGPoint) adjustCoordinatesForVideoArea:(CGPoint)point;
+- (CGSize) getVideoAreaSize;
 #endif
 
 @end

@@ -219,105 +219,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
                        MIN(MAX(y, videoOrigin.y), videoOrigin.y + videoSize.height) - videoOrigin.y);
 }
 
-#if !TARGET_OS_TV
-
-- (uint16_t)getRotationFromAzimuthAngle:(float)azimuthAngle {
-    // iOS reports azimuth of 0 when the stylus is pointing west, but Moonlight expects
-    // rotation of 0 to mean the stylus is pointing north. Rotate the azimuth angle
-    // clockwise by 90 degrees to convert from iOS to Moonlight rotation conventions.
-    int32_t rotationAngle = (azimuthAngle - M_PI_2) * (180.f / M_PI);
-    if (rotationAngle < 0) {
-        rotationAngle += 360;
-    }
-    return (uint16_t)rotationAngle;
-}
-
-- (uint8_t)getTiltFromAltitudeAngle:(float)altitudeAngle {
-    // iOS reports an altitude of 0 when the stylus is parallel to the touch surface,
-    // while Moonlight expects a tilt of 0 when the stylus is perpendicular to the surface.
-    // Subtract the tilt angle from 90 to convert from iOS to Moonlight tilt conventions.
-    uint8_t altitudeDegs = abs((int16_t)(altitudeAngle * (180.f / M_PI)));
-    return 90 - MIN(90, altitudeDegs);
-}
-
-- (BOOL)sendStylusEvent:(UITouch*)event {
-    uint8_t type;
-    
-    // Don't touch stylus events if the host doesn't support them. We want to pass
-    // them as normal touches for legacy hosts that don't understand pen events.
-    if (!(LiGetHostFeatureFlags() & LI_FF_PEN_TOUCH_EVENTS)) {
-        return NO;
-    }
-    
-    switch (event.phase) {
-        case UITouchPhaseBegan:
-            type = LI_TOUCH_EVENT_DOWN;
-            break;
-        case UITouchPhaseMoved:
-            type = LI_TOUCH_EVENT_MOVE;
-            break;
-        case UITouchPhaseEnded:
-            type = LI_TOUCH_EVENT_UP;
-            break;
-        case UITouchPhaseCancelled:
-            type = LI_TOUCH_EVENT_CANCEL;
-            break;
-        default:
-            return YES;
-    }
-
-    CGPoint location = [self adjustCoordinatesForVideoArea:[event locationInView:self]];
-    CGSize videoSize = [self getVideoAreaSize];
-    
-    return LiSendPenEvent(type, LI_TOOL_TYPE_PEN, 0, location.x / videoSize.width, location.y / videoSize.height,
-                          (event.force / event.maximumPossibleForce) / sin(event.altitudeAngle),
-                          0.0f, 0.0f,
-                          [self getRotationFromAzimuthAngle:[event azimuthAngleInView:self]],
-                          [self getTiltFromAltitudeAngle:event.altitudeAngle]) != LI_ERR_UNSUPPORTED;
-}
-
-- (void)sendStylusHoverEvent:(UIHoverGestureRecognizer*)gesture API_AVAILABLE(ios(13.0)) {
-    uint8_t type;
-    
-    switch (gesture.state) {
-        case UIGestureRecognizerStateBegan:
-        case UIGestureRecognizerStateChanged:
-            type = LI_TOUCH_EVENT_HOVER;
-            break;
-
-        case UIGestureRecognizerStateEnded:
-            type = LI_TOUCH_EVENT_HOVER_LEAVE;
-            break;
-
-        default:
-            return;
-    }
-
-    CGPoint location = [self adjustCoordinatesForVideoArea:[gesture locationInView:self]];
-    CGSize videoSize = [self getVideoAreaSize];
-    
-    float distance = 0.0f;
-#if defined(__IPHONE_16_1) || defined(__TVOS_16_1)
-    if (@available(iOS 16.1, *)) {
-        distance = gesture.zOffset;
-    }
-#endif
-    
-    uint16_t rotationAngle = LI_ROT_UNKNOWN;
-    uint8_t tiltAngle = LI_TILT_UNKNOWN;
-#if defined(__IPHONE_16_4) || defined(__TVOS_16_4)
-    if (@available(iOS 16.4, *)) {
-        rotationAngle = [self getRotationFromAzimuthAngle:[gesture azimuthAngleInView:self]];
-        tiltAngle = [self getTiltFromAltitudeAngle:gesture.altitudeAngle];
-    }
-#endif
-    
-    LiSendPenEvent(type, LI_TOOL_TYPE_PEN, 0, location.x / videoSize.width, location.y / videoSize.height,
-                   distance, 0.0f, 0.0f, rotationAngle, tiltAngle);
-}
-
-#endif
-
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     if ([self handleMouseButtonEvent:BUTTON_ACTION_PRESS
                           forTouches:touches
@@ -330,18 +231,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     
     // Notify of user interaction and start expiration timer
     [self startInteractionTimer];
-    
-#if !TARGET_OS_TV
-    if (@available(iOS 13.4, *)) {
-        for (UITouch* touch in touches) {
-            if (touch.type == UITouchTypePencil) {
-                if ([self sendStylusEvent:touch]) {
-                    return;
-                }
-            }
-        }
-    }
-#endif
     
     if (![onScreenControls handleTouchDownEvent:touches]) {
         // We still inform the touch handler even if we're going trigger the
@@ -511,13 +400,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 #if !TARGET_OS_TV
     if (@available(iOS 13.4, *)) {
-        for (UITouch* touch in touches) {
-            if (touch.type == UITouchTypePencil) {
-                if ([self sendStylusEvent:touch]) {
-                    return;
-                }
-            }
-        }
         
         UITouch *touch = [touches anyObject];
         if (touch.type == UITouchTypeIndirectPointer) {
@@ -597,18 +479,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     
     hasUserInteracted = YES;
     
-#if !TARGET_OS_TV
-    if (@available(iOS 13.4, *)) {
-        for (UITouch* touch in touches) {
-            if (touch.type == UITouchTypePencil) {
-                if ([self sendStylusEvent:touch]) {
-                    return;
-                }
-            }
-        }
-    }
-#endif
-    
     if (![onScreenControls handleTouchUpEvent:touches]) {
         [touchHandler touchesEnded:touches withEvent:event];
     }
@@ -619,15 +489,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     [self handleMouseButtonEvent:BUTTON_ACTION_RELEASE
                       forTouches:touches
                        withEvent:event];
-#if !TARGET_OS_TV
-    if (@available(iOS 13.4, *)) {
-        for (UITouch* touch in touches) {
-            if (touch.type == UITouchTypePencil) {
-                [self sendStylusEvent:touch];
-            }
-        }
-    }
-#endif
 }
 
 #if !TARGET_OS_TV
