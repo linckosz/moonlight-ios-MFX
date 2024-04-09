@@ -2,18 +2,12 @@
 //  AbsoluteTouchHandler.h
 //  Moonlight
 //
-//  Created by Cameron Gutman on 11/1/20.
-//  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
+//  Created by TimmyOVO on 10/4/24.
+//  Copyright © 2024 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import "StreamView.h"
+#ifndef AbsoluteTouchHandler_h
+#define AbsoluteTouchHandler_h
 
-NS_ASSUME_NONNULL_BEGIN
 
-@interface AbsoluteTouchHandler : UIResponder
-
--(id)initWithView:(StreamView*)view;
-
-@end
-
-NS_ASSUME_NONNULL_END
+#endif /* AbsoluteTouchHandler_h */
