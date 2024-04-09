@@ -50,6 +50,7 @@
     
 #if !TARGET_OS_TV
     UIScreenEdgePanGestureRecognizer *_exitSwipeRecognizer;
+    UISwipeGestureRecognizer *_keyboardRecognizer;
 #endif
 }
 
@@ -135,6 +136,11 @@
     _exitSwipeRecognizer.delaysTouchesEnded = NO;
     
     [self.view addGestureRecognizer:_exitSwipeRecognizer];
+    
+    _keyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardSwitch)];
+    _keyboardRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+    _keyboardRecognizer.numberOfTouchesRequired = 3;
+    [self.view addGestureRecognizer:_keyboardRecognizer];
 #endif
     
     _tipLabel = [[UILabel alloc] init];
@@ -187,7 +193,7 @@
 #endif
     
     // Only enable scroll and zoom in absolute touch mode
-    if (_settings.absoluteTouchMode) {
+    if (false) {
         _scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
 #if !TARGET_OS_TV
         [_scrollView.panGestureRecognizer setMinimumNumberOfTouches:2];
@@ -365,6 +371,10 @@
     Log(LOG_I, @"User swiped to end stream");
     
     [self returnToMainFrame];
+}
+
+- (void)keyboardSwitch {
+    [self->_streamView switchKeyboard];
 }
 
 - (void) connectionStarted {

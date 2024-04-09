@@ -34,6 +34,7 @@
 - (void) updateCursorLocation:(CGPoint)location isMouse:(BOOL)isMouse;
 - (CGPoint) adjustCoordinatesForVideoArea:(CGPoint)point;
 - (CGSize) getVideoAreaSize;
+- (void) switchKeyboard;
 #endif
 
 @end

@@ -24,12 +24,21 @@
 
 @implementation AbsoluteTouchHandler {
     StreamView* view;
-    
+    NSMutableDictionary* fingers;
+    int fingerCounter;
     NSTimer* longPressTimer;
     UITouch* lastTouchDown;
     CGPoint lastTouchDownLocation;
     UITouch* lastTouchUp;
     CGPoint lastTouchUpLocation;
+}
+
+- (id)initWithView:(StreamView*)view {
+    self = [self init];
+    self->view = view;
+    self->fingers = [NSMutableDictionary new];
+    self->fingerCounter = 0;
+    return self;
 }
 
 - (uint16_t)getRotationFromAzimuthAngle:(float)azimuthAngle {
@@ -78,68 +87,30 @@
     CGPoint location = [self->view adjustCoordinatesForVideoArea:[event locationInView:self->view]];
     CGSize videoSize = [self->view getVideoAreaSize];
     
-    return LiSendPenEvent(type, LI_TOOL_TYPE_PEN, 0, location.x / videoSize.width, location.y / videoSize.height,
+    NSString* touchAddr =[NSString stringWithFormat:@"%p", event];
+    NSNumber* pointerId = [self->fingers valueForKey:touchAddr];
+    if (pointerId == nil) {
+        Log(LOG_I,@"Should not reach here ");
+        return FALSE;
+    }
+    
+    return LiSendTouchEvent(type, pointerId.intValue,
+                            location.x / videoSize.width, location.y / videoSize.height,
                           (event.force / event.maximumPossibleForce) / sin(event.altitudeAngle),
                           0.0f, 0.0f,
-                          [self getRotationFromAzimuthAngle:[event azimuthAngleInView:self->view]],
-                          [self getTiltFromAltitudeAngle:event.altitudeAngle]) != LI_ERR_UNSUPPORTED;
+                          [self getRotationFromAzimuthAngle:[event azimuthAngleInView:self->view]]);
 }
 
 - (BOOL) trySendStylusEvents:(NSSet*) touches {
     if (![AbsoluteTouchHandler isStylusEventSupportByHost]){
         return NO;
     }
-    UITouch* touch = [touches anyObject];
-    if(![self sendStylusEvent:touch]){
-        return NO;
+    for(UITouch* touch in touches){
+        if(![self sendStylusEvent:touch]){
+            
+        }
     }
     return YES;
-}
-
-- (void)sendStylusHoverEvent:(UIHoverGestureRecognizer*)gesture API_AVAILABLE(ios(13.0)) {
-    uint8_t type;
-    
-    switch (gesture.state) {
-        case UIGestureRecognizerStateBegan:
-        case UIGestureRecognizerStateChanged:
-            type = LI_TOUCH_EVENT_HOVER;
-            break;
-
-        case UIGestureRecognizerStateEnded:
-            type = LI_TOUCH_EVENT_HOVER_LEAVE;
-            break;
-
-        default:
-            return;
-    }
-
-    CGPoint location = [self->view adjustCoordinatesForVideoArea:[gesture locationInView:self->view]];
-    CGSize videoSize = [self->view getVideoAreaSize];
-    
-    float distance = 0.0f;
-#if defined(__IPHONE_16_1) || defined(__TVOS_16_1)
-    if (@available(iOS 16.1, *)) {
-        distance = gesture.zOffset;
-    }
-#endif
-    
-    uint16_t rotationAngle = LI_ROT_UNKNOWN;
-    uint8_t tiltAngle = LI_TILT_UNKNOWN;
-#if defined(__IPHONE_16_4) || defined(__TVOS_16_4)
-    if (@available(iOS 16.4, *)) {
-        rotationAngle = [self getRotationFromAzimuthAngle:[gesture azimuthAngleInView:self->view]];
-        tiltAngle = [self getTiltFromAltitudeAngle:gesture.altitudeAngle];
-    }
-#endif
-    
-    LiSendPenEvent(type, LI_TOOL_TYPE_PEN, 0, location.x / videoSize.width, location.y / videoSize.height,
-                   distance, 0.0f, 0.0f, rotationAngle, tiltAngle);
-}
-
-- (id)initWithView:(StreamView*)view {
-    self = [self init];
-    self->view = view;
-    return self;
 }
 
 - (void)onLongPressStart:(NSTimer*)timer {
@@ -149,12 +120,19 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    // Ignore touch down events with more than one finger
-    if ([[event allTouches] count] > 1) {
+    
+    for(UITouch* touch in touches){
+        NSString* touchAddr =[NSString stringWithFormat:@"%p", touch];
+        if ([self->fingers valueForKey:touchAddr] == nil){
+            [self->fingers setValue:[NSNumber numberWithInt:self->fingerCounter++] forKey:touchAddr];
+        }
+    }
+    
+    if ([self trySendStylusEvents:touches]){
         return;
     }
-
-    if ([self trySendStylusEvents:touches]){
+    // Ignore touch down events with more than one finger
+    if ([[event allTouches] count] > 1) {
         return;
     }
 
@@ -169,7 +147,7 @@
     }
     
     // Press the left button down
-    LiSendMouseButtonEvent(BUTTON_ACTION_PRESS, BUTTON_LEFT);
+//    LiSendMouseButtonEvent(BUTTON_ACTION_PRESS, BUTTON_LEFT);
     
     // Start the long press timer
     longPressTimer = [NSTimer scheduledTimerWithTimeInterval:LONG_PRESS_ACTIVATION_DELAY
@@ -183,14 +161,15 @@
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+
+    if ([self trySendStylusEvents:touches]){
+        return;
+    }
     // Ignore touch move events with more than one finger
     if ([[event allTouches] count] > 1) {
         return;
     }
-    
-    if ([self trySendStylusEvents:touches]){
-        return;
-    }
+
     UITouch* touch = [touches anyObject];
     CGPoint touchLocation = [touch locationInView:view];
     
@@ -201,13 +180,23 @@
         longPressTimer = nil;
     }
     
-    [view updateCursorLocation:[[touches anyObject] locationInView:view] isMouse:NO];
+//    [view updateCursorLocation:[[touches anyObject] locationInView:view] isMouse:NO];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+
+    
     if ([self trySendStylusEvents:touches]){
         return;
     }
+    for(UITouch* touch in touches){
+        NSString* touchAddr =[NSString stringWithFormat:@"%p", touch];
+        if ([self->fingers valueForKey:touchAddr] != nil){
+            [self->fingers removeObjectForKey:touchAddr];
+            self->fingerCounter--;
+        }
+    }
+    
     // Only fire this logic if all touches have ended
     if ([[event allTouches] count] == [touches count]) {
         // Cancel the long press timer
@@ -215,10 +204,10 @@
         longPressTimer = nil;
 
         // Left button up on finger up
-        LiSendMouseButtonEvent(BUTTON_ACTION_RELEASE, BUTTON_LEFT);
+//        LiSendMouseButtonEvent(BUTTON_ACTION_RELEASE, BUTTON_LEFT);
 
         // Raise right button too in case we triggered a long press gesture
-        LiSendMouseButtonEvent(BUTTON_ACTION_RELEASE, BUTTON_RIGHT);
+//        LiSendMouseButtonEvent(BUTTON_ACTION_RELEASE, BUTTON_RIGHT);
         
         // Remember this last touch for touch-down deadzoning
         lastTouchUp = [touches anyObject];
