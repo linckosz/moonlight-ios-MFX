@@ -50,7 +50,8 @@
     
 #if !TARGET_OS_TV
     UIScreenEdgePanGestureRecognizer *_exitSwipeRecognizer;
-    UISwipeGestureRecognizer *_keyboardRecognizer;
+    UISwipeGestureRecognizer *_openKeyboardRecognizer;
+    UISwipeGestureRecognizer *_closeKeyboardRecognizer;
 #endif
 }
 
@@ -137,10 +138,15 @@
     
     [self.view addGestureRecognizer:_exitSwipeRecognizer];
     
-    _keyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardSwitch)];
-    _keyboardRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
-    _keyboardRecognizer.numberOfTouchesRequired = 3;
-    [self.view addGestureRecognizer:_keyboardRecognizer];
+    _openKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openKeyboard)];
+    _openKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+    _openKeyboardRecognizer.numberOfTouchesRequired = 2;
+    [self.view addGestureRecognizer:_openKeyboardRecognizer];
+    
+    _closeKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    _closeKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+    _closeKeyboardRecognizer.numberOfTouchesRequired = 2;
+    [self.view addGestureRecognizer:_closeKeyboardRecognizer];
 #endif
     
     _tipLabel = [[UILabel alloc] init];
@@ -373,8 +379,12 @@
     [self returnToMainFrame];
 }
 
-- (void)keyboardSwitch {
-    [self->_streamView switchKeyboard];
+- (void)openKeyboard {
+    [self->_streamView openKeyboard];
+}
+
+- (void)closeKeyboard {
+    [self->_streamView closeKeyboard];
 }
 
 - (void) connectionStarted {
