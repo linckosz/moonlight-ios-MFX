@@ -36,6 +36,8 @@
 - (CGSize) getVideoAreaSize;
 - (void) openKeyboard;
 - (void) closeKeyboard;
+- (void) previousMonitor;
+- (void) nextMonitor;
 #endif
 
 @end

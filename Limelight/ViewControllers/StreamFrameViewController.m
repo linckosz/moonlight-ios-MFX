@@ -52,6 +52,8 @@
     UIScreenEdgePanGestureRecognizer *_exitSwipeRecognizer;
     UISwipeGestureRecognizer *_openKeyboardRecognizer;
     UISwipeGestureRecognizer *_closeKeyboardRecognizer;
+    UISwipeGestureRecognizer *_nextMonitorRecognizer;
+    UISwipeGestureRecognizer *_previousMonitorRecognizer;
 #endif
 }
 
@@ -147,6 +149,16 @@
     _closeKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
     _closeKeyboardRecognizer.numberOfTouchesRequired = 2;
     [self.view addGestureRecognizer:_closeKeyboardRecognizer];
+    
+    _previousMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousMonitor)];
+    _previousMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    _previousMonitorRecognizer.numberOfTouchesRequired = 2;
+    [self.view addGestureRecognizer:_previousMonitorRecognizer];
+    
+    _nextMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextMonitor)];
+    _nextMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    _nextMonitorRecognizer.numberOfTouchesRequired = 2;
+    [self.view addGestureRecognizer:_nextMonitorRecognizer];
 #endif
     
     _tipLabel = [[UILabel alloc] init];
@@ -385,6 +397,14 @@
 
 - (void)closeKeyboard {
     [self->_streamView closeKeyboard];
+}
+
+- (void)previousMonitor {
+    [self->_streamView previousMonitor];
+}
+
+- (void)nextMonitor {
+    [self->_streamView nextMonitor];
 }
 
 - (void) connectionStarted {

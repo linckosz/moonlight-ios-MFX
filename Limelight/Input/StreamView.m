@@ -22,6 +22,7 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     
     KeyboardInputField* keyInputField;
     BOOL isInputingText;
+    int monitorControlKey;
     NSMutableSet* keysDown;
     
     float streamAspectRatio;
@@ -286,6 +287,44 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     isInputingText = false;
 }
 
+- (void) switchMonitor:(BOOL)next {
+
+    // ctrl
+    LiSendKeyboardEvent(0xA2, KEY_ACTION_DOWN, 0);
+    // alt
+    LiSendKeyboardEvent(0xA4, KEY_ACTION_DOWN, 0);
+    // shift
+    LiSendKeyboardEvent(0xA0, KEY_ACTION_DOWN, 0);
+    int fKeyToSend = self->monitorControlKey;
+    if (fKeyToSend > 0x73){
+        fKeyToSend = 0x70;
+    }
+    if (fKeyToSend < 0x70) {
+        fKeyToSend = 0x73;
+    }
+    self->monitorControlKey = fKeyToSend;
+    Log(LOG_I, @"Switch Monitor to %x",fKeyToSend);
+    // f1
+    LiSendKeyboardEvent(fKeyToSend, KEY_ACTION_DOWN, 0);
+    usleep(50 * 1000);
+    LiSendKeyboardEvent(fKeyToSend, KEY_ACTION_UP, 0);
+    
+    // ctrl
+    LiSendKeyboardEvent(0xA2, KEY_ACTION_UP, 0);
+    // alt
+    LiSendKeyboardEvent(0xA4, KEY_ACTION_UP, 0);
+    // shift
+    LiSendKeyboardEvent(0xA0, KEY_ACTION_UP, 0);
+    self->monitorControlKey += next ? 1 : -1;
+}
+
+- (void) previousMonitor {
+    [self switchMonitor:NO];
+}
+- (void) nextMonitor {
+    [self switchMonitor:YES];
+}
+
 - (UIBarButtonItem *)createButtonWithImageNamed:(NSString *)imageName backgroundColor:(UIColor *)backgroundColor target:(id)target action:(SEL)action keyCode:(NSInteger)keyCode isToggleable:(BOOL)isToggleable {
     UIImage *image = [UIImage imageNamed:imageName];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -319,6 +358,7 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     objc_setAssociatedObject(sender, "isOn", @(isOn), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     // Get the keyCode parameter and convert to short for key press event
     short keyCode = [objc_getAssociatedObject(sender, "keyCode") shortValue];
+    Log(LOG_I, @"Sending keycode: %d",keyCode);
     // Close keyboard if done button clicked
     if (!keyCode) {
         [keyInputField resignFirstResponder];
