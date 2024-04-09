@@ -113,13 +113,6 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
 //        [self addGestureRecognizer:continuousMouseWheelRecognizer];
 //    }
     
-#if defined(__IPHONE_16_1) || defined(__TVOS_16_1)
-    if (@available(iOS 16.1, *)) {
-        UIHoverGestureRecognizer *stylusHoverRecognizer = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:@selector(sendStylusHoverEvent:)];
-        stylusHoverRecognizer.allowedTouchTypes = @[@(UITouchTypePencil)];
-        [self addGestureRecognizer:stylusHoverRecognizer];
-    }
-#endif
 #endif
     
     x1mouse = [[X1Mouse alloc] init];

@@ -21,6 +21,13 @@
     self->view = view;
     self->fingers = [NSMutableDictionary new];
     self->fingerCounter = 0;
+#if defined(__IPHONE_16_1) || defined(__TVOS_16_1)
+    if (@available(iOS 16.1, *)) {
+        UIHoverGestureRecognizer *stylusHoverRecognizer = [[UIHoverGestureRecognizer alloc] initWithTarget:self->view action:@selector(sendStylusHoverEvent:)];
+        stylusHoverRecognizer.allowedTouchTypes = @[@(UITouchTypePencil)];
+        [self->view addGestureRecognizer:stylusHoverRecognizer];
+    }
+#endif
     return self;
 }
 
@@ -47,7 +54,7 @@
     return (LiGetHostFeatureFlags() & LI_FF_PEN_TOUCH_EVENTS);
 }
 
-- (BOOL)sendStylusEvent:(UITouch*)event {
+- (BOOL)sendStylusEvent:(UITouch*)event isPencil:(BOOL)isPencil {
     uint8_t type;
     
     switch (event.phase) {
@@ -76,12 +83,59 @@
         Log(LOG_I,@"Should not reach here ");
         return FALSE;
     }
+    if (isPencil) {
+        return LiSendPenEvent(type, LI_TOOL_TYPE_PEN, 0, location.x / videoSize.width, location.y / videoSize.height,
+                              (event.force / event.maximumPossibleForce) / sin(event.altitudeAngle),
+                              0.0f, 0.0f,
+                              [self getRotationFromAzimuthAngle:[event azimuthAngleInView:self->view]],
+                              [self getTiltFromAltitudeAngle:event.altitudeAngle]) != LI_ERR_UNSUPPORTED;
+    }else{
+        return LiSendTouchEvent(type, pointerId.intValue,
+                                location.x / videoSize.width, location.y / videoSize.height,
+                              (event.force / event.maximumPossibleForce) / sin(event.altitudeAngle),
+                              0.0f, 0.0f,
+                              [self getRotationFromAzimuthAngle:[event azimuthAngleInView:self->view]]);
+    }
+}
+
+- (void)sendStylusHoverEvent:(UIHoverGestureRecognizer*)gesture API_AVAILABLE(ios(13.0)) {
+    uint8_t type;
     
-    return LiSendTouchEvent(type, pointerId.intValue,
-                            location.x / videoSize.width, location.y / videoSize.height,
-                          (event.force / event.maximumPossibleForce) / sin(event.altitudeAngle),
-                          0.0f, 0.0f,
-                          [self getRotationFromAzimuthAngle:[event azimuthAngleInView:self->view]]);
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateChanged:
+            type = LI_TOUCH_EVENT_HOVER;
+            break;
+
+        case UIGestureRecognizerStateEnded:
+            type = LI_TOUCH_EVENT_HOVER_LEAVE;
+            break;
+
+        default:
+            return;
+    }
+
+    CGPoint location = [self->view adjustCoordinatesForVideoArea:[gesture locationInView:self->view]];
+    CGSize videoSize = [self->view getVideoAreaSize];
+    
+    float distance = 0.0f;
+#if defined(__IPHONE_16_1) || defined(__TVOS_16_1)
+    if (@available(iOS 16.1, *)) {
+        distance = gesture.zOffset;
+    }
+#endif
+    
+    uint16_t rotationAngle = LI_ROT_UNKNOWN;
+    uint8_t tiltAngle = LI_TILT_UNKNOWN;
+#if defined(__IPHONE_16_4) || defined(__TVOS_16_4)
+    if (@available(iOS 16.4, *)) {
+        rotationAngle = [self getRotationFromAzimuthAngle:[gesture azimuthAngleInView:self]];
+        tiltAngle = [self getTiltFromAltitudeAngle:gesture.altitudeAngle];
+    }
+#endif
+    
+    LiSendPenEvent(type, LI_TOOL_TYPE_PEN, 0, location.x / videoSize.width, location.y / videoSize.height,
+                   distance, 0.0f, 0.0f, rotationAngle, tiltAngle);
 }
 
 - (BOOL) trySendStylusEvents:(NSSet*) touches {
@@ -89,9 +143,7 @@
         return NO;
     }
     for(UITouch* touch in touches){
-        if(![self sendStylusEvent:touch]){
-            
-        }
+        [self sendStylusEvent:touch isPencil:touch.type == UITouchTypePencil];
     }
     return YES;
 }
