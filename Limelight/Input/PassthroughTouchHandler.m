@@ -2,35 +2,18 @@
 //  AbsoluteTouchHandler.m
 //  Moonlight
 //
-//  Created by Cameron Gutman on 11/1/20.
+//  Created by TimmyOVO on 3/4/24.
 //  Copyright © 2020 Moonlight Game Streaming Project. All rights reserved.
 //
 
-#import "AbsoluteTouchHandler.h"
+#import "PassthroughTouchHandler.h"
 
 #include <Limelight.h>
 
-// How long the fingers must be stationary to start a right click
-#define LONG_PRESS_ACTIVATION_DELAY 0.650f
-
-// How far the finger can move before it cancels a right click
-#define LONG_PRESS_ACTIVATION_DELTA 0.01f
-
-// How long the double tap deadzone stays in effect between touch up and touch down
-#define DOUBLE_TAP_DEAD_ZONE_DELAY 0.250f
-
-// How far the finger can move before it can override the double tap deadzone
-#define DOUBLE_TAP_DEAD_ZONE_DELTA 0.025f
-
-@implementation AbsoluteTouchHandler {
+@implementation PassthroughTouchHandler {
     StreamView* view;
     NSMutableDictionary* fingers;
     int fingerCounter;
-    NSTimer* longPressTimer;
-    UITouch* lastTouchDown;
-    CGPoint lastTouchDownLocation;
-    UITouch* lastTouchUp;
-    CGPoint lastTouchUpLocation;
 }
 
 - (id)initWithView:(StreamView*)view {
@@ -102,7 +85,7 @@
 }
 
 - (BOOL) trySendStylusEvents:(NSSet*) touches {
-    if (![AbsoluteTouchHandler isStylusEventSupportByHost]){
+    if (![PassthroughTouchHandler isStylusEventSupportByHost]){
         return NO;
     }
     for(UITouch* touch in touches){
@@ -140,8 +123,6 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-
-    
     if ([self trySendStylusEvents:touches]){
         return;
     }

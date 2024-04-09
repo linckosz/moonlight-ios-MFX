@@ -13,6 +13,7 @@
 #import "KeyboardSupport.h"
 #import "RelativeTouchHandler.h"
 #import "AbsoluteTouchHandler.h"
+#import "PassthroughTouchHandler.h"
 #import "KeyboardInputField.h"
 
 static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
@@ -71,14 +72,17 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     if (settings.absoluteTouchMode) {
         self->touchHandler = [[AbsoluteTouchHandler alloc] initWithView:self];
     }
+    else if (settings.touchPassthrough) {
+        self->touchHandler = [[PassthroughTouchHandler alloc] initWithView:self];
+    }
     else {
         self->touchHandler = [[RelativeTouchHandler alloc] initWithView:self];
     }
     
     onScreenControls = [[OnScreenControls alloc] initWithView:self controllerSup:controllerSupport streamConfig:streamConfig];
     OnScreenControlsLevel level = (OnScreenControlsLevel)[settings.onscreenControls integerValue];
-    if (settings.absoluteTouchMode) {
-        Log(LOG_I, @"On-screen controls disabled in absolute touch mode");
+    if (settings.absoluteTouchMode || settings.touchPassthrough) {
+        Log(LOG_I, @"On-screen controls disabled in touch modes");
         [onScreenControls setLevel:OnScreenControlsLevelOff];
     }
     else if (level == OnScreenControlsLevelAuto) {

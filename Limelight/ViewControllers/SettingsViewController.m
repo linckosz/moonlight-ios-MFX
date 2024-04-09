@@ -536,6 +536,7 @@ BOOL isCustomResolution(CGSize res) {
     BOOL btMouseSupport = [self.btMouseSelector selectedSegmentIndex] == 1;
     BOOL useFramePacing = [self.framePacingSelector selectedSegmentIndex] == 1;
     BOOL absoluteTouchMode = [self.touchModeSelector selectedSegmentIndex] == 1;
+    BOOL touchPassthrough = [self.touchModeSelector selectedSegmentIndex] == 2;
     BOOL statsOverlay = [self.statsOverlaySelector selectedSegmentIndex] == 1;
     BOOL enableHdr = [self.hdrSelector selectedSegmentIndex] == 1;
     [dataMan saveSettingsWithBitrate:_bitrate
@@ -553,7 +554,8 @@ BOOL isCustomResolution(CGSize res) {
                            enableHdr:enableHdr
                       btMouseSupport:btMouseSupport
                    absoluteTouchMode:absoluteTouchMode
-                        statsOverlay:statsOverlay];
+                        statsOverlay:statsOverlay
+                    touchPassthrough:touchPassthrough];
 }
 
 - (void)didReceiveMemoryWarning {

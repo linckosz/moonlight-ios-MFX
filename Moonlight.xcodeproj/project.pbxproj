@@ -8,12 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		693B3A9B218638CD00982F7B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 693B3A9A218638CD00982F7B /* Settings.bundle */; };
+		8C88B0312BC5CB0F002E3B1E /* AbsoluteTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B01C2BC5CB0F002E3B1E /* AbsoluteTouchHandler.m */; };
+		8C88B0322BC5CB0F002E3B1E /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B01E2BC5CB0F002E3B1E /* Controller.m */; };
+		8C88B0332BC5CB0F002E3B1E /* ControllerSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B0202BC5CB0F002E3B1E /* ControllerSupport.m */; };
+		8C88B0342BC5CB0F002E3B1E /* HapticContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B0222BC5CB0F002E3B1E /* HapticContext.m */; };
+		8C88B0352BC5CB0F002E3B1E /* KeyboardInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B0242BC5CB0F002E3B1E /* KeyboardInputField.m */; };
+		8C88B0362BC5CB0F002E3B1E /* KeyboardSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B0262BC5CB0F002E3B1E /* KeyboardSupport.m */; };
+		8C88B0372BC5CB0F002E3B1E /* OnScreenControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B0292BC5CB0F002E3B1E /* OnScreenControls.m */; };
+		8C88B0382BC5CB0F002E3B1E /* PassthroughTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02B2BC5CB0F002E3B1E /* PassthroughTouchHandler.m */; };
+		8C88B0392BC5CB0F002E3B1E /* RelativeTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02D2BC5CB0F002E3B1E /* RelativeTouchHandler.m */; };
+		8C88B03A2BC5CB0F002E3B1E /* StreamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02F2BC5CB0F002E3B1E /* StreamView.m */; };
 		98181BE92791277400E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BE82791275D00E43572 /* libSDL2.a */; };
 		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		98181BED2791281100E43572 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEC2791281100E43572 /* CoreMotion.framework */; };
 		9819CC14254F107A008A7C8E /* RelativeTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819CC13254F107A008A7C8E /* RelativeTouchHandler.m */; };
 		9819CC1D254F1730008A7C8E /* RelativeTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819CC13254F107A008A7C8E /* RelativeTouchHandler.m */; };
-		9819CC22254F180F008A7C8E /* AbsoluteTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819CC21254F180F008A7C8E /* AbsoluteTouchHandler.m */; };
+		9819CC22254F180F008A7C8E /* PassthroughTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819CC21254F180F008A7C8E /* PassthroughTouchHandler.m */; };
 		9827E7A32514366900F25707 /* HapticContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9827E7A22514366900F25707 /* HapticContext.m */; };
 		9827E7A42514366900F25707 /* HapticContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9827E7A22514366900F25707 /* HapticContext.m */; };
 		9832D1361BBCD5C50036EF48 /* TemporaryApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 9832D1351BBCD5C50036EF48 /* TemporaryApp.m */; };
@@ -172,6 +182,29 @@
 /* Begin PBXFileReference section */
 		566E9D2B2770B23A00EF7BFE /* Moonlight v1.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moonlight v1.7.xcdatamodel"; sourceTree = "<group>"; };
 		693B3A9A218638CD00982F7B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		8C88B0192BC5C9E0002E3B1E /* AbsoluteTouchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbsoluteTouchHandler.h; sourceTree = "<group>"; };
+		8C88B01A2BC5CA02002E3B1E /* AbsoluteTouchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbsoluteTouchHandler.m; sourceTree = "<group>"; };
+		8C88B01B2BC5CB0F002E3B1E /* AbsoluteTouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbsoluteTouchHandler.h; sourceTree = "<group>"; };
+		8C88B01C2BC5CB0F002E3B1E /* AbsoluteTouchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbsoluteTouchHandler.m; sourceTree = "<group>"; };
+		8C88B01D2BC5CB0F002E3B1E /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
+		8C88B01E2BC5CB0F002E3B1E /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
+		8C88B01F2BC5CB0F002E3B1E /* ControllerSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControllerSupport.h; sourceTree = "<group>"; };
+		8C88B0202BC5CB0F002E3B1E /* ControllerSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControllerSupport.m; sourceTree = "<group>"; };
+		8C88B0212BC5CB0F002E3B1E /* HapticContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HapticContext.h; sourceTree = "<group>"; };
+		8C88B0222BC5CB0F002E3B1E /* HapticContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HapticContext.m; sourceTree = "<group>"; };
+		8C88B0232BC5CB0F002E3B1E /* KeyboardInputField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputField.h; sourceTree = "<group>"; };
+		8C88B0242BC5CB0F002E3B1E /* KeyboardInputField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardInputField.m; sourceTree = "<group>"; };
+		8C88B0252BC5CB0F002E3B1E /* KeyboardSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardSupport.h; sourceTree = "<group>"; };
+		8C88B0262BC5CB0F002E3B1E /* KeyboardSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardSupport.m; sourceTree = "<group>"; };
+		8C88B0272BC5CB0F002E3B1E /* Moonlight-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Moonlight-Bridging-Header.h"; sourceTree = "<group>"; };
+		8C88B0282BC5CB0F002E3B1E /* OnScreenControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnScreenControls.h; sourceTree = "<group>"; };
+		8C88B0292BC5CB0F002E3B1E /* OnScreenControls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnScreenControls.m; sourceTree = "<group>"; };
+		8C88B02A2BC5CB0F002E3B1E /* PassthroughTouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassthroughTouchHandler.h; sourceTree = "<group>"; };
+		8C88B02B2BC5CB0F002E3B1E /* PassthroughTouchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PassthroughTouchHandler.m; sourceTree = "<group>"; };
+		8C88B02C2BC5CB0F002E3B1E /* RelativeTouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RelativeTouchHandler.h; sourceTree = "<group>"; };
+		8C88B02D2BC5CB0F002E3B1E /* RelativeTouchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelativeTouchHandler.m; sourceTree = "<group>"; };
+		8C88B02E2BC5CB0F002E3B1E /* StreamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamView.h; sourceTree = "<group>"; };
+		8C88B02F2BC5CB0F002E3B1E /* StreamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamView.m; sourceTree = "<group>"; };
 		9803CCAB254F9EAF00EE185E /* ConnectionCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionCallbacks.h; sourceTree = "<group>"; };
 		98132E8C20BC9A62007A053F /* Moonlight v1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moonlight v1.1.xcdatamodel"; sourceTree = "<group>"; };
 		98181BE82791275D00E43572 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL2/lib/iOS/libSDL2.a; sourceTree = "<group>"; };
@@ -179,8 +212,8 @@
 		98181BEC2791281100E43572 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		9819CC12254F107A008A7C8E /* RelativeTouchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RelativeTouchHandler.h; sourceTree = "<group>"; };
 		9819CC13254F107A008A7C8E /* RelativeTouchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RelativeTouchHandler.m; sourceTree = "<group>"; };
-		9819CC20254F180F008A7C8E /* AbsoluteTouchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbsoluteTouchHandler.h; sourceTree = "<group>"; };
-		9819CC21254F180F008A7C8E /* AbsoluteTouchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbsoluteTouchHandler.m; sourceTree = "<group>"; };
+		9819CC20254F180F008A7C8E /* PassthroughTouchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PassthroughTouchHandler.h; sourceTree = "<group>"; };
+		9819CC21254F180F008A7C8E /* PassthroughTouchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PassthroughTouchHandler.m; sourceTree = "<group>"; };
 		9819CC25254F2734008A7C8E /* Moonlight v1.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moonlight v1.6.xcdatamodel"; sourceTree = "<group>"; };
 		9827E7A22514366900F25707 /* HapticContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HapticContext.m; sourceTree = "<group>"; };
 		9827E7A7251436EA00F25707 /* HapticContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HapticContext.h; sourceTree = "<group>"; };
@@ -443,6 +476,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C88B0302BC5CB0F002E3B1E /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				8C88B01B2BC5CB0F002E3B1E /* AbsoluteTouchHandler.h */,
+				8C88B01C2BC5CB0F002E3B1E /* AbsoluteTouchHandler.m */,
+				8C88B01D2BC5CB0F002E3B1E /* Controller.h */,
+				8C88B01E2BC5CB0F002E3B1E /* Controller.m */,
+				8C88B01F2BC5CB0F002E3B1E /* ControllerSupport.h */,
+				8C88B0202BC5CB0F002E3B1E /* ControllerSupport.m */,
+				8C88B0212BC5CB0F002E3B1E /* HapticContext.h */,
+				8C88B0222BC5CB0F002E3B1E /* HapticContext.m */,
+				8C88B0232BC5CB0F002E3B1E /* KeyboardInputField.h */,
+				8C88B0242BC5CB0F002E3B1E /* KeyboardInputField.m */,
+				8C88B0252BC5CB0F002E3B1E /* KeyboardSupport.h */,
+				8C88B0262BC5CB0F002E3B1E /* KeyboardSupport.m */,
+				8C88B0272BC5CB0F002E3B1E /* Moonlight-Bridging-Header.h */,
+				8C88B0282BC5CB0F002E3B1E /* OnScreenControls.h */,
+				8C88B0292BC5CB0F002E3B1E /* OnScreenControls.m */,
+				8C88B02A2BC5CB0F002E3B1E /* PassthroughTouchHandler.h */,
+				8C88B02B2BC5CB0F002E3B1E /* PassthroughTouchHandler.m */,
+				8C88B02C2BC5CB0F002E3B1E /* RelativeTouchHandler.h */,
+				8C88B02D2BC5CB0F002E3B1E /* RelativeTouchHandler.m */,
+				8C88B02E2BC5CB0F002E3B1E /* StreamView.h */,
+				8C88B02F2BC5CB0F002E3B1E /* StreamView.m */,
+			);
+			name = Input;
+			sourceTree = "<group>";
+		};
 		9896219423D15C2900211983 /* X1Kit */ = {
 			isa = PBXGroup;
 			children = (
@@ -594,10 +655,13 @@
 				9827E7A7251436EA00F25707 /* HapticContext.h */,
 				9819CC12254F107A008A7C8E /* RelativeTouchHandler.h */,
 				9819CC13254F107A008A7C8E /* RelativeTouchHandler.m */,
-				9819CC20254F180F008A7C8E /* AbsoluteTouchHandler.h */,
-				9819CC21254F180F008A7C8E /* AbsoluteTouchHandler.m */,
+				9819CC20254F180F008A7C8E /* PassthroughTouchHandler.h */,
+				9819CC21254F180F008A7C8E /* PassthroughTouchHandler.m */,
 				988FCD3F293B091B003050E2 /* KeyboardInputField.h */,
 				988FCD40293B091B003050E2 /* KeyboardInputField.m */,
+				8C88B01A2BC5CA02002E3B1E /* AbsoluteTouchHandler.m */,
+				8C88B0192BC5C9E0002E3B1E /* AbsoluteTouchHandler.h */,
+				8C88B0302BC5CB0F002E3B1E /* Input */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -1064,9 +1128,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB290D0719B2C406004C83CF /* Limelight.xcdatamodeld in Sources */,
-				9819CC22254F180F008A7C8E /* AbsoluteTouchHandler.m in Sources */,
+				8C88B0362BC5CB0F002E3B1E /* KeyboardSupport.m in Sources */,
+				9819CC22254F180F008A7C8E /* PassthroughTouchHandler.m in Sources */,
 				9819CC14254F107A008A7C8E /* RelativeTouchHandler.m in Sources */,
 				FB1A674D2131E65900507771 /* KeyboardSupport.m in Sources */,
+				8C88B0352BC5CB0F002E3B1E /* KeyboardInputField.m in Sources */,
+				8C88B0342BC5CB0F002E3B1E /* HapticContext.m in Sources */,
 				FB89463219F646E200339C8A /* VideoDecoderRenderer.m in Sources */,
 				FB290D0419B2C406004C83CF /* AppDelegate.m in Sources */,
 				FB9AFD401A7E127D00872C98 /* AppListResponse.m in Sources */,
@@ -1077,10 +1144,14 @@
 				FB4678FF1A565DAC00377732 /* WakeOnLanManager.m in Sources */,
 				FB53E1431BE5DC4400CD6ECE /* IdManager.m in Sources */,
 				9897B6A1221260EF00966419 /* Controller.m in Sources */,
+				8C88B03A2BC5CB0F002E3B1E /* StreamView.m in Sources */,
 				FB89462919F646E200339C8A /* mkcert.c in Sources */,
+				8C88B0332BC5CB0F002E3B1E /* ControllerSupport.m in Sources */,
 				FB9AFD281A7C84ED00872C98 /* HttpResponse.m in Sources */,
 				FBDE86E019F7A837001C18A8 /* UIComputerView.m in Sources */,
 				FB89463019F646E200339C8A /* StreamConfiguration.m in Sources */,
+				8C88B0372BC5CB0F002E3B1E /* OnScreenControls.m in Sources */,
+				8C88B0382BC5CB0F002E3B1E /* PassthroughTouchHandler.m in Sources */,
 				FBD3495319FF36FB002D2A60 /* SWRevealViewController.m in Sources */,
 				FB1D59971BBCCB6400F482CA /* ComputerScrollView.m in Sources */,
 				FBD3495019FF2174002D2A60 /* SettingsViewController.m in Sources */,
@@ -1095,13 +1166,16 @@
 				FB89463619F646E200339C8A /* StreamFrameViewController.m in Sources */,
 				9827E7A32514366900F25707 /* HapticContext.m in Sources */,
 				9832D1361BBCD5C50036EF48 /* TemporaryApp.m in Sources */,
+				8C88B0392BC5CB0F002E3B1E /* RelativeTouchHandler.m in Sources */,
 				98D585701C0ED0E800F6CC00 /* TemporarySettings.m in Sources */,
 				FB89462819F646E200339C8A /* CryptoManager.m in Sources */,
 				DC1F5A07206436B20037755F /* ConnectionHelper.m in Sources */,
 				FB89462E19F646E200339C8A /* PairManager.m in Sources */,
 				FB9AFD371A7E02DB00872C98 /* HttpRequest.m in Sources */,
 				FB4678ED1A50C40900377732 /* OnScreenControls.m in Sources */,
+				8C88B0322BC5CB0F002E3B1E /* Controller.m in Sources */,
 				FB290D0019B2C406004C83CF /* main.m in Sources */,
+				8C88B0312BC5CB0F002E3B1E /* AbsoluteTouchHandler.m in Sources */,
 				9896219723D15C7000211983 /* X1Kit.swift in Sources */,
 				FBD3494319FC9C04002D2A60 /* AppAssetManager.m in Sources */,
 				FB6549561A57907E001C8F39 /* DiscoveryWorker.m in Sources */,

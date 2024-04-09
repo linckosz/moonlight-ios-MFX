@@ -67,7 +67,8 @@
                        enableHdr:(BOOL)enableHdr
                   btMouseSupport:(BOOL)btMouseSupport
                absoluteTouchMode:(BOOL)absoluteTouchMode
-                    statsOverlay:(BOOL)statsOverlay {
+                    statsOverlay:(BOOL)statsOverlay
+                touchPassthrough:(BOOL)touchPassthrough {
     
     [_managedObjectContext performBlockAndWait:^{
         Settings* settingsToSave = [self retrieveSettings];
@@ -87,6 +88,8 @@
         settingsToSave.btMouseSupport = btMouseSupport;
         settingsToSave.absoluteTouchMode = absoluteTouchMode;
         settingsToSave.statsOverlay = statsOverlay;
+        settingsToSave.touchPassthrough = touchPassthrough;
+        
         
         [self saveData];
     }];
