@@ -16,6 +16,8 @@ Changes:
   * Two-finger swipes left to switch to previous monitor.
   * Two-finger swipes right to switch to next monitor.
 
+**Monitor switching functionality are very primitive cause in order to improve it, we need to monitor listing and lookup somekind of API which is not available yet in Sunshine protocol.**
+
 ---
 本分支是对上游Moonlight客户端的fork，增加了一些改进和希望最终被上游合并。本分支会不断更新。
 ---
