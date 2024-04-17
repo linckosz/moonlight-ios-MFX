@@ -1479,7 +1479,7 @@
 					"$(PROJECT_DIR)/libs/SDL2/lib/iOS-Sim",
 					"$(PROJECT_DIR)/libs/FFmpeg/lib/iOS-Sim",
 				);
-				MARKETING_VERSION = 9.0.2;
+				MARKETING_VERSION = 9.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ovo.moonlight-stream.Moonlight";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1530,7 +1530,7 @@
 					"$(PROJECT_DIR)/libs/SDL2/lib/iOS-Sim",
 					"$(PROJECT_DIR)/libs/FFmpeg/lib/iOS-Sim",
 				);
-				MARKETING_VERSION = 9.0.2;
+				MARKETING_VERSION = 9.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ovo.moonlight-stream.Moonlight";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
