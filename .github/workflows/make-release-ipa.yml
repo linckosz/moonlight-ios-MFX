@@ -27,7 +27,7 @@ jobs:
           path: build/Moonlight.ipa
       - uses: ncipollo/release-action@v1
         with:
-            artifacts: "build/Moonlight.ipa"
+            artifacts: "build/Moonlight-NE.ipa"
             name: Moonlight-NE#${{ github.ref }}
             body: ${{ github.event.head_commit.message }}
             tag: ${{ github.ref }}
