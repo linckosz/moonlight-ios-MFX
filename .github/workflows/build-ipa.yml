@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Checkout submodules
+        run: "git submodule update --init --recursive"
       - name: Build
         run: |
           xcodebuild -workspace Moonlight.xcodeproj/project.xcworkspace -scheme Moonlight -sdk iphoneos -configuration AppStoreDistribution  archive -archivePath $PWD/build/Moonlight-NE.xcarchive | xcpretty
@@ -23,6 +25,6 @@ jobs:
       - name: Upload IPA to Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Moonlight-NG nightly artifact
+          name: Moonlight-NE nightly artifact
           path: build/Moonlight.ipa
 
