@@ -35,9 +35,6 @@ Changes:
   * 两指向左滑动切换到上一个屏幕。
   * 两指向右滑动切换到下一个屏幕。
 
-
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/kwv8vpwr457lqn25/branch/master?svg=true)](https://ci.appveyor.com/project/cgutman/moonlight-ios/branch/master)
-
 [Moonlight for iOS/tvOS](https://moonlight-stream.org) is an open source client for [Sunshine](https://github.com/LizardByte/Sunshine) and NVIDIA GameStream. Moonlight for iOS/tvOS allows you to stream your full collection of games and apps from your powerful desktop computer to your iOS device or Apple TV.
 
 Moonlight also has a [PC client](https://github.com/moonlight-stream/moonlight-qt) and [Android client](https://github.com/moonlight-stream/moonlight-android).
@@ -45,6 +42,18 @@ Moonlight also has a [PC client](https://github.com/moonlight-stream/moonlight-q
 Check out [the Moonlight wiki](https://github.com/moonlight-stream/moonlight-docs/wiki) for more detailed project information, setup guide, or troubleshooting steps.
 
 [![Moonlight for iOS and tvOS](https://moonlight-stream.org/images/App_Store_Badge_135x40.svg)](https://apps.apple.com/us/app/moonlight-game-streaming/id1000551566)
+
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TimmyOVO/moonlight-ios-NE/.github%2Fworkflows%2Fbuild-ipa.yml?label=nightly&link=https%3A%2F%2Fgithub.com%2FTimmyOVO%2Fmoonlight-ios-NE%2Factions)
+
+## Installation
+1. Download IPA file from the [Github Actions](https://github.com/TimmyOVO/moonlight-ios-NE/actions)
+2. Use AltStore or TrollStore etc. to sign & install the IPA file.
+3. Enjoy!
+
+## 安装指南
+1. 从[Github Actions](https://github.com/TimmyOVO/moonlight-ios-NE/actions)下载IPA文件.
+2. 使用AltStore或TrollStore等软件对IPA文件进行签名并安装。
+3. 享受吧！
 
 ## Building
 * Install Xcode from the [App Store page](https://apps.apple.com/us/app/xcode/id497799835)
