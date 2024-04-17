@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,9 @@
 		8C88B0382BC5CB0F002E3B1E /* PassthroughTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02B2BC5CB0F002E3B1E /* PassthroughTouchHandler.m */; };
 		8C88B0392BC5CB0F002E3B1E /* RelativeTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02D2BC5CB0F002E3B1E /* RelativeTouchHandler.m */; };
 		8C88B03A2BC5CB0F002E3B1E /* StreamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02F2BC5CB0F002E3B1E /* StreamView.m */; };
+		8CB5F9522BD01C8F003E91FD /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9512BD01C8F003E91FD /* iPhone.storyboard */; };
+		8CB5F9562BD020B8003E91FD /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9552BD020B8003E91FD /* Launch Screen.xib */; };
+		8CB5F95A2BD020E2003E91FD /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9592BD020E2003E91FD /* iPad.storyboard */; };
 		98181BE92791277400E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BE82791275D00E43572 /* libSDL2.a */; };
 		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		98181BED2791281100E43572 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEC2791281100E43572 /* CoreMotion.framework */; };
@@ -108,8 +111,6 @@
 		FB290D0419B2C406004C83CF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0319B2C406004C83CF /* AppDelegate.m */; };
 		FB290D0719B2C406004C83CF /* Limelight.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0519B2C406004C83CF /* Limelight.xcdatamodeld */; };
 		FB290D0919B2C406004C83CF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB290D0819B2C406004C83CF /* Images.xcassets */; };
-		FB290E7919B37D81004C83CF /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB290E7819B37D81004C83CF /* iPad.storyboard */; };
-		FB290E7B19B38036004C83CF /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB290E7A19B38036004C83CF /* iPhone.storyboard */; };
 		FB4678ED1A50C40900377732 /* OnScreenControls.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4678EC1A50C40900377732 /* OnScreenControls.m */; };
 		FB4678FA1A55FFAD00377732 /* DiscoveryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4678F91A55FFAD00377732 /* DiscoveryManager.m */; };
 		FB4678FF1A565DAC00377732 /* WakeOnLanManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4678FE1A565DAC00377732 /* WakeOnLanManager.m */; };
@@ -131,7 +132,6 @@
 		FB89463419F646E200339C8A /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462219F646E200339C8A /* Utils.m */; };
 		FB89463519F646E200339C8A /* MainFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462519F646E200339C8A /* MainFrameViewController.m */; };
 		FB89463619F646E200339C8A /* StreamFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462719F646E200339C8A /* StreamFrameViewController.m */; };
-		FB89463819F6473800339C8A /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB89463719F6473800339C8A /* Launch Screen.xib */; };
 		FB8946ED19F6AFE800339C8A /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB8946EA19F6AFB800339C8A /* libopus.a */; };
 		FB9AFD281A7C84ED00872C98 /* HttpResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD271A7C84ED00872C98 /* HttpResponse.m */; };
 		FB9AFD321A7D867C00872C98 /* AppAssetRetriever.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9AFD311A7D867C00872C98 /* AppAssetRetriever.m */; };
@@ -205,6 +205,13 @@
 		8C88B02D2BC5CB0F002E3B1E /* RelativeTouchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelativeTouchHandler.m; sourceTree = "<group>"; };
 		8C88B02E2BC5CB0F002E3B1E /* StreamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamView.h; sourceTree = "<group>"; };
 		8C88B02F2BC5CB0F002E3B1E /* StreamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamView.m; sourceTree = "<group>"; };
+		8CB5F94F2BD01AFC003E91FD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		8CB5F9502BD01C8F003E91FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/iPhone.storyboard; sourceTree = "<group>"; };
+		8CB5F9532BD01C8F003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/iPhone.xcstrings; sourceTree = "<group>"; };
+		8CB5F9542BD020B8003E91FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/Launch Screen.xib"; sourceTree = "<group>"; };
+		8CB5F9572BD020B8003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = "mul.lproj/Launch Screen.xcstrings"; sourceTree = "<group>"; };
+		8CB5F9582BD020E2003E91FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/iPad.storyboard; sourceTree = "<group>"; };
+		8CB5F95B2BD020E2003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/iPad.xcstrings; sourceTree = "<group>"; };
 		9803CCAB254F9EAF00EE185E /* ConnectionCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionCallbacks.h; sourceTree = "<group>"; };
 		98132E8C20BC9A62007A053F /* Moonlight v1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moonlight v1.1.xcdatamodel"; sourceTree = "<group>"; };
 		98181BE82791275D00E43572 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL2/lib/iOS/libSDL2.a; sourceTree = "<group>"; };
@@ -275,8 +282,6 @@
 		FB290D0319B2C406004C83CF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		FB290D0619B2C406004C83CF /* Limelight.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Limelight.xcdatamodel; sourceTree = "<group>"; };
 		FB290D0819B2C406004C83CF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		FB290E7819B37D81004C83CF /* iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPad.storyboard; sourceTree = SOURCE_ROOT; };
-		FB290E7A19B38036004C83CF /* iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhone.storyboard; sourceTree = SOURCE_ROOT; };
 		FB4678EB1A50C40900377732 /* OnScreenControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnScreenControls.h; sourceTree = "<group>"; };
 		FB4678EC1A50C40900377732 /* OnScreenControls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnScreenControls.m; sourceTree = "<group>"; };
 		FB4678F21A51BDCB00377732 /* Limelight 0.3.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Limelight 0.3.0.xcdatamodel"; sourceTree = "<group>"; };
@@ -321,7 +326,6 @@
 		FB89462519F646E200339C8A /* MainFrameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainFrameViewController.m; sourceTree = "<group>"; };
 		FB89462619F646E200339C8A /* StreamFrameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamFrameViewController.h; sourceTree = "<group>"; };
 		FB89462719F646E200339C8A /* StreamFrameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamFrameViewController.m; sourceTree = "<group>"; };
-		FB89463719F6473800339C8A /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = SOURCE_ROOT; };
 		FB89469419F6AFB800339C8A /* aes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
 		FB89469519F6AFB800339C8A /* asn1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = asn1.h; sourceTree = "<group>"; };
 		FB89469619F6AFB800339C8A /* asn1_mac.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = asn1_mac.h; sourceTree = "<group>"; };
@@ -600,9 +604,9 @@
 				FBDE86DF19F7A837001C18A8 /* UIComputerView.m */,
 				FBDE86E419F82297001C18A8 /* UIAppView.h */,
 				FBDE86E519F82297001C18A8 /* UIAppView.m */,
-				FB290E7819B37D81004C83CF /* iPad.storyboard */,
-				FB290E7A19B38036004C83CF /* iPhone.storyboard */,
-				FB89463719F6473800339C8A /* Launch Screen.xib */,
+				8CB5F9592BD020E2003E91FD /* iPad.storyboard */,
+				8CB5F9512BD01C8F003E91FD /* iPhone.storyboard */,
+				8CB5F9552BD020B8003E91FD /* Launch Screen.xib */,
 				FB290D0819B2C406004C83CF /* Images.xcassets */,
 				FB290D0519B2C406004C83CF /* Limelight.xcdatamodeld */,
 				FB1D59951BBCCB6400F482CA /* ComputerScrollView.h */,
@@ -1008,6 +1012,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = FB290CE519B2C406004C83CF;
 			productRefGroup = FB290CEF19B2C406004C83CF /* Products */;
@@ -1059,11 +1064,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB290E7919B37D81004C83CF /* iPad.storyboard in Resources */,
+				8CB5F95A2BD020E2003E91FD /* iPad.storyboard in Resources */,
 				FB290CFE19B2C406004C83CF /* InfoPlist.strings in Resources */,
-				FB290E7B19B38036004C83CF /* iPhone.storyboard in Resources */,
+				8CB5F9522BD01C8F003E91FD /* iPhone.storyboard in Resources */,
 				FB290D0919B2C406004C83CF /* Images.xcassets in Resources */,
-				FB89463819F6473800339C8A /* Launch Screen.xib in Resources */,
+				8CB5F9562BD020B8003E91FD /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1210,33 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		8CB5F9512BD01C8F003E91FD /* iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CB5F9502BD01C8F003E91FD /* Base */,
+				8CB5F9532BD01C8F003E91FD /* mul */,
+			);
+			name = iPhone.storyboard;
+			sourceTree = SOURCE_ROOT;
+		};
+		8CB5F9552BD020B8003E91FD /* Launch Screen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CB5F9542BD020B8003E91FD /* Base */,
+				8CB5F9572BD020B8003E91FD /* mul */,
+			);
+			name = "Launch Screen.xib";
+			sourceTree = SOURCE_ROOT;
+		};
+		8CB5F9592BD020E2003E91FD /* iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CB5F9582BD020E2003E91FD /* Base */,
+				8CB5F95B2BD020E2003E91FD /* mul */,
+			);
+			name = iPad.storyboard;
+			sourceTree = SOURCE_ROOT;
+		};
 		FB1A675E2132419700507771 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1217,6 +1249,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				FB290CFD19B2C406004C83CF /* en */,
+				8CB5F94F2BD01AFC003E91FD /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1339,6 +1372,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1394,6 +1428,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
