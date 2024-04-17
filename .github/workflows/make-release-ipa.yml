@@ -30,4 +30,4 @@ jobs:
             artifacts: "build/Moonlight.ipa"
             name: Moonlight-NE#${{ github.ref }}
             body: ${{ github.event.head_commit.message }}
-            tag: Version ${{ github.ref }}
+            tag: ${{ github.ref }}
