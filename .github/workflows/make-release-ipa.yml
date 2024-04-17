@@ -28,6 +28,6 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
             artifacts: "build/Moonlight.ipa"
-            name: Moonlight-NE#${{ github.ref }}
+            name: Moonlight-NE#${{ github.ref_name }}
             body: ${{ github.event.head_commit.message }}
-            tag: ${{ github.ref }}
+            tag: ${{ github.ref_name }}
