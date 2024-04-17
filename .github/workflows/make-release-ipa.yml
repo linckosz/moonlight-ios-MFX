@@ -20,11 +20,6 @@ jobs:
           mkdir -p ./build/IPA && mkdir -p ./build/IPA/Payload
           cp -r ./build/Moonlight-NE.xcarchive/Products/Applications/Moonlight.app ./build/IPA/Payload/Moonlight.app
           cd ./build/IPA && zip -r ../../build/Moonlight.ipa ./Payload/* && cd ../..
-      - name: Upload IPA to Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Moonlight-NE nightly artifact
-          path: build/Moonlight.ipa
       - uses: ncipollo/release-action@v1
         with:
             artifacts: "build/Moonlight.ipa"
