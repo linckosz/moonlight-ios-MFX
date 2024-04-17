@@ -1,0 +1,28 @@
+name: Xcode - Build and Analyze
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    name: Build IPA
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build
+        run: |
+          xcodebuild -workspace Moonlight.xcodeproj/project.xcworkspace -scheme Moonlight -sdk iphoneos -configuration AppStoreDistribution  archive -archivePath $PWD/build/Moonlight-NE.xcarchive | xcpretty
+          mkdir -p ./build/IPA && mkdir -p ./build/IPA/Payload
+          cp -r ./build/Moonlight-NE.xcarchive/Products/Applications/Moonlight.app ./build/IPA/Payload/Moonlight.app
+          cd ./build/IPA && zip -r ../../build/Moonlight.ipa ./Payload/* && cd ../..
+      - name: Upload IPA to Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Moonlight-NG nightly artifact
+          path: build/Moonlight.ipa
+
