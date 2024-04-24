@@ -10,6 +10,9 @@
 #import "OnScreenControls.h"
 #import "Moonlight-Swift.h"
 #import "StreamConfiguration.h"
+#import <UIKit/UIKit.h>
+#import <Metal/Metal.h>
+#import <MetalKit/MetalKit.h>
 
 @protocol UserInteractionDelegate <NSObject>
 
@@ -21,7 +24,7 @@
 #if TARGET_OS_TV
 @interface StreamView : UIView <X1KitMouseDelegate, UITextFieldDelegate>
 #else
-@interface StreamView : UIView <X1KitMouseDelegate, UITextFieldDelegate, UIPointerInteractionDelegate>
+@interface StreamView : MTKView  <X1KitMouseDelegate, UITextFieldDelegate, UIPointerInteractionDelegate>
 #endif
 
 - (void) setupStreamView:(ControllerSupport*)controllerSupport

@@ -35,6 +35,8 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     
     CADisplayLink* _displayLink;
     BOOL framePacing;
+    
+    VTDecompressionSessionRef decompressionSession;
 }
 
 - (void)reinitializeDisplayLayer
@@ -74,6 +76,31 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     if (formatDesc != nil) {
         CFRelease(formatDesc);
         formatDesc = nil;
+    }
+    [self initializeVTDecompressSession:false];
+}
+
+- (void) initializeVTDecompressSession:(Boolean)init {
+    if (decompressionSession != NULL){
+        VTDecompressionSessionInvalidate(decompressionSession);
+        CFRelease(decompressionSession);
+        decompressionSession = nil;
+    }
+    if (!init) {
+        return;
+    }
+    NSDictionary *pixelAttributes = @{
+        (id)kCVPixelBufferIOSurfaceCoreAnimationCompatibilityKey : (id)kCFBooleanTrue,
+        (id)kCVPixelBufferIOSurfacePropertiesKey : @{},
+    };
+    int status = VTDecompressionSessionCreate(kCFAllocatorDefault,
+                                              formatDesc,
+                                              nil,
+                                              (__bridge CFDictionaryRef _Nullable)(pixelAttributes),
+                                              nil,
+                                              &decompressionSession);
+    if (status != noErr) {
+        Log(LOG_E, @"Failed to instance VTDecompressionSessionRef, status %d", status);
     }
 }
 
@@ -508,13 +535,15 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
             abort();
         }
     }
-    
+
     if (formatDesc == NULL) {
         // Can't decode if we haven't gotten our parameter sets yet
         free(data);
         return DR_NEED_IDR;
     }
-    
+    if (decompressionSession == NULL) {
+        [self initializeVTDecompressSession:true];
+    }
     // Check for previous decoder errors before doing anything
     if (displayLayer.status == AVQueuedSampleBufferRenderingStatusFailed) {
         Log(LOG_E, @"Display layer rendering failed: %@", displayLayer.error);
@@ -594,8 +623,38 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
         return DR_NEED_IDR;
     }
 
-    // Enqueue the next frame
-    [self->displayLayer enqueueSampleBuffer:sampleBuffer];
+//     Enqueue the next frame
+    if (@available(iOS 17.0, *)) {
+        [[self->displayLayer sampleBufferRenderer] enqueueSampleBuffer:sampleBuffer];
+    } else {
+        [self->displayLayer enqueueSampleBuffer:sampleBuffer];
+    }
+//    StreamViewRenderer* renderer = _view.delegate;
+//    status = VTDecompressionSessionDecodeFrameWithOutputHandler(decompressionSession,
+//                                                       sampleBuffer,
+//                                                       0,
+//                                                       NULL,
+//                                                       ^(OSStatus status, VTDecodeInfoFlags infoFlags, CVImageBufferRef  _Nullable imageBuffer, CMTime presentationTimestamp, CMTime presentationDuration) {
+//                                                               if (status != noErr)
+//                                                               {
+//                                                                   NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
+//                                                                   Log(LOG_E, @"Decompression session error: %@", error);
+//                                                                   LiRequestIdrFrame();
+//                                                                   return;
+//                                                               }
+//                                                        
+//                                                               CVPixelBufferRetain(imageBuffer);
+//                                                               CVPixelBufferLockBaseAddress(imageBuffer, kCVPixelBufferLock_ReadOnly);
+//
+//
+//        [renderer updateFrameTexture:imageBuffer];
+//        CVPixelBufferUnlockBaseAddress(imageBuffer,kCVPixelBufferLock_ReadOnly);
+//        CVPixelBufferRelease(imageBuffer);
+//    });
+    if (status != noErr) {
+        Log(LOG_E, @"Unable to decode");
+    }
+
     
     if (du->frameType == FRAME_TYPE_IDR) {
         // Ensure the layer is visible now

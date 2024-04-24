@@ -48,6 +48,8 @@
     BOOL _userIsInteracting;
     CGSize _keyboardSize;
     
+    StreamViewRenderer *_renderer;
+    
 #if !TARGET_OS_TV
     UIScreenEdgePanGestureRecognizer *_exitSwipeRecognizer;
     UISwipeGestureRecognizer *_openKeyboardRecognizer;
@@ -210,6 +212,20 @@
                                                object: nil];
 #endif
     
+//    _streamView.device = MTLCreateSystemDefaultDevice();
+//    _streamView.backgroundColor = UIColor.blackColor;
+//    if(!_streamView.device) {
+//        NSLog(@"Metal is not supported on this device");
+//        self.view = [[UIView alloc] initWithFrame:self.view.frame];
+//        return;
+//    }
+//    
+//    _renderer = [[StreamViewRenderer alloc] initWithMetalKitView:_streamView];
+//
+//    [_renderer mtkView:_streamView drawableSizeWillChange:_streamView.drawableSize];
+//
+//    _streamView.delegate = _renderer;
+//    
     // Only enable scroll and zoom in absolute touch mode
     if (self->_settings.absoluteTouchMode) {
         _scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];

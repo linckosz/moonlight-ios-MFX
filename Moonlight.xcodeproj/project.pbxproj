@@ -21,6 +21,9 @@
 		8CB5F9522BD01C8F003E91FD /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9512BD01C8F003E91FD /* iPhone.storyboard */; };
 		8CB5F9562BD020B8003E91FD /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9552BD020B8003E91FD /* Launch Screen.xib */; };
 		8CB5F95A2BD020E2003E91FD /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9592BD020E2003E91FD /* iPad.storyboard */; };
+		8CE512332BD96ABD00134C94 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8CE512322BD96ABD00134C94 /* Shaders.metal */; };
+		8CE512352BD96DFB00134C94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CE512342BD96DFB00134C94 /* Assets.xcassets */; };
+		8CE512382BD96ED700134C94 /* StreamViewRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE512372BD96ED700134C94 /* StreamViewRenderer.m */; };
 		98181BE92791277400E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BE82791275D00E43572 /* libSDL2.a */; };
 		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		98181BED2791281100E43572 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEC2791281100E43572 /* CoreMotion.framework */; };
@@ -212,6 +215,11 @@
 		8CB5F9572BD020B8003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = "mul.lproj/Launch Screen.xcstrings"; sourceTree = "<group>"; };
 		8CB5F9582BD020E2003E91FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/iPad.storyboard; sourceTree = "<group>"; };
 		8CB5F95B2BD020E2003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/iPad.xcstrings; sourceTree = "<group>"; };
+		8CE512312BD96AA200134C94 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
+		8CE512322BD96ABD00134C94 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		8CE512342BD96DFB00134C94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8CE512362BD96EBD00134C94 /* StreamViewRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StreamViewRenderer.h; sourceTree = "<group>"; };
+		8CE512372BD96ED700134C94 /* StreamViewRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StreamViewRenderer.m; sourceTree = "<group>"; };
 		9803CCAB254F9EAF00EE185E /* ConnectionCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionCallbacks.h; sourceTree = "<group>"; };
 		98132E8C20BC9A62007A053F /* Moonlight v1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moonlight v1.1.xcdatamodel"; sourceTree = "<group>"; };
 		98181BE82791275D00E43572 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL2/lib/iOS/libSDL2.a; sourceTree = "<group>"; };
@@ -540,6 +548,7 @@
 		FB290CE519B2C406004C83CF = {
 			isa = PBXGroup;
 			children = (
+				8CE512342BD96DFB00134C94 /* Assets.xcassets */,
 				9896219423D15C2900211983 /* X1Kit */,
 				98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */,
 				FB290CF919B2C406004C83CF /* Moonlight */,
@@ -698,6 +707,10 @@
 				FB89461C19F646E200339C8A /* VideoDecoderRenderer.h */,
 				FB89461D19F646E200339C8A /* VideoDecoderRenderer.m */,
 				9803CCAB254F9EAF00EE185E /* ConnectionCallbacks.h */,
+				8CE512312BD96AA200134C94 /* ShaderTypes.h */,
+				8CE512322BD96ABD00134C94 /* Shaders.metal */,
+				8CE512362BD96EBD00134C94 /* StreamViewRenderer.h */,
+				8CE512372BD96ED700134C94 /* StreamViewRenderer.m */,
 			);
 			path = Stream;
 			sourceTree = "<group>";
@@ -1068,6 +1081,7 @@
 				FB290CFE19B2C406004C83CF /* InfoPlist.strings in Resources */,
 				8CB5F9522BD01C8F003E91FD /* iPhone.storyboard in Resources */,
 				FB290D0919B2C406004C83CF /* Images.xcassets in Resources */,
+				8CE512352BD96DFB00134C94 /* Assets.xcassets in Resources */,
 				8CB5F9562BD020B8003E91FD /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1156,6 +1170,7 @@
 				FBDE86E019F7A837001C18A8 /* UIComputerView.m in Sources */,
 				FB89463019F646E200339C8A /* StreamConfiguration.m in Sources */,
 				8C88B0372BC5CB0F002E3B1E /* OnScreenControls.m in Sources */,
+				8CE512332BD96ABD00134C94 /* Shaders.metal in Sources */,
 				8C88B0382BC5CB0F002E3B1E /* PassthroughTouchHandler.m in Sources */,
 				FBD3495319FF36FB002D2A60 /* SWRevealViewController.m in Sources */,
 				FB1D59971BBCCB6400F482CA /* ComputerScrollView.m in Sources */,
@@ -1166,6 +1181,7 @@
 				FB4678FA1A55FFAD00377732 /* DiscoveryManager.m in Sources */,
 				98D5856D1C0EA79600F6CC00 /* TemporaryHost.m in Sources */,
 				FB89463519F646E200339C8A /* MainFrameViewController.m in Sources */,
+				8CE512382BD96ED700134C94 /* StreamViewRenderer.m in Sources */,
 				FBD1C8E21A8AD71400C6703C /* Logger.m in Sources */,
 				FB1D599A1BBCCD7E00F482CA /* AppCollectionView.m in Sources */,
 				FB89463619F646E200339C8A /* StreamFrameViewController.m in Sources */,

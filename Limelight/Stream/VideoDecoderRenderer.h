@@ -7,10 +7,12 @@
 //
 
 @import AVFoundation;
+@import VideoToolbox;
 
 #import "ConnectionCallbacks.h"
 
 #include "Limelight.h"
+#import "StreamViewRenderer.h"
 
 @interface VideoDecoderRenderer : NSObject
 
