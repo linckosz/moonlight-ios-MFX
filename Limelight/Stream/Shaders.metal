@@ -7,68 +7,46 @@
 //
 
 #include <metal_stdlib>
-
 using namespace metal;
 
-// Include header shared between this Metal shader code and C code executing Metal API commands.
-#include "ShaderTypes.h"
+typedef struct {
+    float4 renderedCoordinate [[position]];
+    float2 textureCoordinate;
+} TextureMappingVertex;
 
-// Vertex shader outputs and fragment shader inputs
-struct RasterizerData
-{
-    // The [[position]] attribute of this member indicates that this value
-    // is the clip space position of the vertex when this structure is
-    // returned from the vertex function.
-    float4 position [[position]];
+vertex TextureMappingVertex mapTexture(unsigned int vertex_id [[ vertex_id ]]) {
+    float4x4 renderedCoordinates = float4x4(float4( -1.0, -1.0, 0.0, 1.0 ),      /// (x, y, depth, W)
+                                            float4(  1.0, -1.0, 0.0, 1.0 ),
+                                            float4( -1.0,  1.0, 0.0, 1.0 ),
+                                            float4(  1.0,  1.0, 0.0, 1.0 ));
 
-    // Since this member does not have a special attribute, the rasterizer
-    // interpolates its value with the values of the other triangle vertices
-    // and then passes the interpolated value to the fragment shader for each
-    // fragment in the triangle.
-    float2 texCoords;
-};
-
-vertex RasterizerData
-vertexShader(uint vertexID [[vertex_id]],
-             constant AAPLVertex *vertices [[buffer(AAPLVertexInputIndexVertices)]],
-             constant vector_uint2 *viewportSizePointer [[buffer(AAPLVertexInputIndexViewportSize)]])
-{
-    RasterizerData out;
-
-    // Index into the array of positions to get the current vertex.
-    // The positions are specified in pixel dimensions (i.e. a value of 100
-    // is 100 pixels from the origin).
-    float2 pixelSpacePosition = vertices[vertexID].position.xy;
-
-    // Get the viewport size and cast to float.
-    vector_float2 viewportSize = vector_float2(*viewportSizePointer);
+    float4x2 textureCoordinates = float4x2(float2( 0.0, 1.0 ), /// (x, y)
+                                           float2( 1.0, 1.0 ),
+                                           float2( 0.0, 0.0 ),
+                                           float2( 1.0, 0.0 ));
+    TextureMappingVertex outVertex;
+    outVertex.renderedCoordinate = renderedCoordinates[vertex_id];
+    outVertex.textureCoordinate = textureCoordinates[vertex_id];
     
-
-    // To convert from positions in pixel space to positions in clip-space,
-    //  divide the pixel coordinates by half the size of the viewport.
-    out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
-    out.position.xy = pixelSpacePosition / (viewportSize / 2.0);
-
-    // Pass the input color directly to the rasterizer.
-    out.texCoords = vertices[vertexID].texCoords;
-
-    return out;
+    return outVertex;
 }
 
-fragment float4 fragmentShader(RasterizerData in [[stage_in]],
-                               constant float2 &texCoordsScales [[buffer(0)]],
-                               texture2d<float> texture [[texture(0)]])
-{
-    constexpr sampler samplr(filter::linear, mag_filter::linear, min_filter::linear);
+fragment half4 displayTexture(TextureMappingVertex mappingVertex [[ stage_in ]],
+                              texture2d<float, access::sample> texture [[ texture(0) ]],
+                              texture2d<float, access::sample> texture1 [[ texture(1) ]]) {
+    constexpr sampler s(address::clamp_to_edge, filter::linear);
+    constexpr sampler colorSampler(mip_filter::linear,
+                                   mag_filter::linear,
+                                   min_filter::linear);
     
-    float scaleX = texCoordsScales.x;
-    float scaleY = texCoordsScales.y;
-    float x = (in.texCoords.x - (1.0 - scaleX) / 2.0) / scaleX;
-    float y = (in.texCoords.y - (1.0 - scaleY) / 2.0) / scaleY;
-    if (x < 0 || x > 1 || y < 0 || y > 1) {
-        return float4(float3(0.0), 1.0);
-    }
-    float3 color = texture.sample(samplr, float2(x, y)).rgb;
-    return float4(color, 1.0);
+    const float4x4 ycbcrToRGBTransform = float4x4(
+        float4(+1.0000f, +1.0000f, +1.0000f, +0.0000f),
+        float4(+0.0000f, -0.3441f, +1.7720f, +0.0000f),
+        float4(+1.4020f, -0.7141f, +0.0000f, +0.0000f),
+        float4(-0.7010f, +0.5291f, -0.8860f, +1.0000f)
+    );
+    float4 ycbcr = float4(texture.sample(colorSampler, mappingVertex.textureCoordinate).r,
+                          texture1.sample(colorSampler, mappingVertex.textureCoordinate).rg, 1.0);
+    return half4(ycbcrToRGBTransform * ycbcr);
 }
 

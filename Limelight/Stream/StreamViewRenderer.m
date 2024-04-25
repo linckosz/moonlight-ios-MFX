@@ -27,10 +27,9 @@ static const NSUInteger MaxBuffersInFlight = 3;
     // The command queue used to pass commands to the device.
     id<MTLCommandQueue> _commandQueue;
 
-    // The current size of the view, used as an input to the vertex shader.
-    vector_uint2 _viewportSize;
     CVMetalTextureCacheRef textureCache;
-    id <MTLTexture> _colorMap;
+    id <MTLTexture> _texture;
+    id <MTLTexture> _chromaTexture;
 }
 
 -(nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)view;
@@ -41,16 +40,20 @@ static const NSUInteger MaxBuffersInFlight = 3;
         NSError *error;
 
         _device = view.device;
-
+        view.framebufferOnly = true;
+        view.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
+        view.preferredFramesPerSecond = 120;
+        
         // Load all the shader files with a .metal file extension in the project.
         id<MTLLibrary> defaultLibrary = [_device newDefaultLibrary];
 
-        id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"vertexShader"];
-        id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:@"fragmentShader"];
+        id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"mapTexture"];
+        id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:@"displayTexture"];
 
         // Configure a pipeline descriptor that is used to create a pipeline state.
         MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
         pipelineStateDescriptor.label = @"Simple Pipeline";
+        pipelineStateDescriptor.sampleCount = 1;
         pipelineStateDescriptor.vertexFunction = vertexFunction;
         pipelineStateDescriptor.fragmentFunction = fragmentFunction;
         pipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat;
@@ -58,10 +61,6 @@ static const NSUInteger MaxBuffersInFlight = 3;
         _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
                                                                  error:&error];
                 
-        // Pipeline State creation could fail if the pipeline descriptor isn't set up properly.
-        //  If the Metal API validation is enabled, you can find out more information about what
-        //  went wrong.  (Metal API validation is enabled by default when a debug build is run
-        //  from Xcode.)
         NSAssert(_pipelineState, @"Failed to create pipeline state: %@", error);
 
         MTKTextureLoader* textureLoader = [[MTKTextureLoader alloc] initWithDevice:_device];
@@ -71,13 +70,18 @@ static const NSUInteger MaxBuffersInFlight = 3;
           MTKTextureLoaderOptionTextureStorageMode : @(MTLStorageModePrivate)
           };
 
-        _colorMap = [textureLoader newTextureWithName:@"ColorMap"
+        _texture = [textureLoader newTextureWithName:@"ColorMap"
                                           scaleFactor:1.0
                                                bundle:nil
                                               options:textureLoaderOptions
                                                 error:&error];
+        _chromaTexture = [textureLoader newTextureWithName:@"ColorMap"
+                                               scaleFactor:1.0
+                                                    bundle:nil
+                                                   options:textureLoaderOptions
+                                                     error:&error];
 
-        if(!_colorMap || error)
+        if(!_texture || error)
         {
             NSLog(@"Error creating texture %@", error.localizedDescription);
         }
@@ -87,49 +91,46 @@ static const NSUInteger MaxBuffersInFlight = 3;
 
     return self;
 }
-
-- (void) updateFrameTexture:(nonnull CVImageBufferRef) imageBuffer;
-{
-    @autoreleasepool {
-        if (imageBuffer == nil) {
-            return;
-        }
-        if (textureCache == nil) {
-            CVMetalTextureCacheCreate(kCFAllocatorDefault, nil,_device,nil,&textureCache);
-        }
-        size_t width  = CVPixelBufferGetWidth(imageBuffer);
-        size_t height = CVPixelBufferGetHeight(imageBuffer);
-        if (width == 0 || height == 0) {
-            return;
-        }
-
-        CVMetalTextureRef cvTexture;
-        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                      textureCache,
-                                                      imageBuffer,
-                                                      nil,
-                                                      MTLPixelFormatBGRA8Unorm,
-                                                      width,
-                                                      height,
-                                                      0,
-                                                  &cvTexture);
-        
-        _colorMap = CVMetalTextureGetTexture(cvTexture);
-        CVBufferRelease(cvTexture);
+-(id<MTLTexture>) texture:(nonnull CVImageBufferRef)imageBuffer withPlane: (size_t) plane formatIn: (NSUInteger) format; {
+    if (imageBuffer == nil) {
+        return nil;
     }
+    BOOL isPlanar = CVPixelBufferIsPlanar(imageBuffer);
+    if (textureCache == nil) {
+        CVMetalTextureCacheCreate(kCFAllocatorDefault, nil,_device,nil,&textureCache);
+    }
+//        OSType format = CVPixelBufferGetPixelFormatType(imageBuffer);
+    size_t width  = isPlanar ? CVPixelBufferGetWidthOfPlane(imageBuffer,plane) : CVPixelBufferGetWidth(imageBuffer);
+    size_t height = isPlanar? CVPixelBufferGetHeightOfPlane(imageBuffer,plane) :CVPixelBufferGetHeight(imageBuffer);
+    if (width == 0 || height == 0) {
+        return nil;
+    }
+
+    CVMetalTextureRef cvTexture;
+    CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                                  textureCache,
+                                                  imageBuffer,
+                                                  nil,
+                                              format,
+                                                  width,
+                                                  height,
+                                              plane,
+                                              &cvTexture);
+    
+    id<MTLTexture> result = CVMetalTextureGetTexture(cvTexture);
+    CVBufferRelease(cvTexture);
+    return result;
+}
+- (void) updateFrameTexture:(nonnull CVImageBufferRef) buffer;
+{
+    id<MTLTexture> luma = [self texture:buffer withPlane:0 formatIn:MTLPixelFormatR8Unorm];
+    id<MTLTexture> chroma = [self texture:buffer withPlane:1 formatIn:MTLPixelFormatRG8Unorm];
+    _texture = luma;
+    _chromaTexture = chroma;
 }
 
 - (void)drawInMTKView:(nonnull MTKView *)view
 {
-    static const AAPLVertex triangleVertices[] =
-    {
-        // 2D positions,    RGBA colors
-        { {  250,  -250 }, { 0, 1 } },
-        { { -250,  -250 }, { 1,1 } },
-        { {    0,   250 }, { 0,0 } },
-        { {    250,   250 }, { 1,0 } },
-    };
-    static const vector_float2 ff = {1,1};
     // Create a new command buffer for each render pass to the current drawable.
     id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
     commandBuffer.label = @"MyCommand";
@@ -144,26 +145,15 @@ static const NSUInteger MaxBuffersInFlight = 3;
         [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
         renderEncoder.label = @"MyRenderEncoder";
 
-        // Set the region of the drawable to draw into.
-        [renderEncoder setViewport:(MTLViewport){0.0, 0.0, _viewportSize.x, _viewportSize.y, 0.0, 1.0 }];
+        [renderEncoder pushDebugGroup:@"RenderStreamFrame"];
         
         [renderEncoder setRenderPipelineState:_pipelineState];
-        // Pass in the parameter data.
-        [renderEncoder setVertexBytes:triangleVertices
-                               length:sizeof(triangleVertices)
-                              atIndex:AAPLVertexInputIndexVertices];
+        [renderEncoder setFragmentTexture:_texture atIndex:0];
+        [renderEncoder setFragmentTexture:_chromaTexture atIndex:1];
+        [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
         
-        [renderEncoder setVertexBytes:&_viewportSize
-                               length:sizeof(_viewportSize)
-                              atIndex:AAPLVertexInputIndexViewportSize];
-
-        // Draw the triangle.
-        [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip
-                          vertexStart:0
-                          vertexCount:4];
-//        [renderEncoder setFragmentBytes:ff length:sizeof(simd_float2) atIndex:0];
+        [renderEncoder popDebugGroup];
         
-        [renderEncoder setFragmentTexture:_colorMap atIndex:0];
         [renderEncoder endEncoding];
 
         // Schedule a present once the framebuffer is complete using the current drawable.
@@ -176,8 +166,6 @@ static const NSUInteger MaxBuffersInFlight = 3;
 
 - (void)mtkView:(nonnull MTKView *)view drawableSizeWillChange:(CGSize)size
 {
-    // Save the size of the drawable to pass to the vertex shader.
-    _viewportSize.x = size.width;
-    _viewportSize.y = size.height;
+
 }
 @end
