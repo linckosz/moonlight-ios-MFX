@@ -49,36 +49,38 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     }
 
     [self initializeVTDecompressSession:false];
-    CALayer *oldLayer = displayLayer;
-        
-    displayLayer = [[AVSampleBufferDisplayLayer alloc] init];
-    displayLayer.backgroundColor = [UIColor blackColor].CGColor;
-        
-    // Ensure the AVSampleBufferDisplayLayer is sized to preserve the aspect ratio
-    // of the video stream. We used to use AVLayerVideoGravityResizeAspect, but that
-    // respects the PAR encoded in the SPS which causes our computed video-relative
-    // touch location to be wrong in StreamView if the aspect ratio of the host
-    // desktop doesn't match the aspect ratio of the stream.
-    CGSize videoSize;
-    if (_view.bounds.size.width > _view.bounds.size.height * _streamAspectRatio) {
-        videoSize = CGSizeMake(_view.bounds.size.height * _streamAspectRatio, _view.bounds.size.height);
-    } else {
-        videoSize = CGSizeMake(_view.bounds.size.width, _view.bounds.size.width / _streamAspectRatio);
-    }
-    displayLayer.position = CGPointMake(CGRectGetMidX(_view.bounds), CGRectGetMidY(_view.bounds));
-    displayLayer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height);
-    displayLayer.videoGravity = AVLayerVideoGravityResize;
+    if (![self isMetalFxAvailable]) {
+        CALayer *oldLayer = displayLayer;
+            
+        displayLayer = [[AVSampleBufferDisplayLayer alloc] init];
+        displayLayer.backgroundColor = [UIColor blackColor].CGColor;
+            
+        // Ensure the AVSampleBufferDisplayLayer is sized to preserve the aspect ratio
+        // of the video stream. We used to use AVLayerVideoGravityResizeAspect, but that
+        // respects the PAR encoded in the SPS which causes our computed video-relative
+        // touch location to be wrong in StreamView if the aspect ratio of the host
+        // desktop doesn't match the aspect ratio of the stream.
+        CGSize videoSize;
+        if (_view.bounds.size.width > _view.bounds.size.height * _streamAspectRatio) {
+            videoSize = CGSizeMake(_view.bounds.size.height * _streamAspectRatio, _view.bounds.size.height);
+        } else {
+            videoSize = CGSizeMake(_view.bounds.size.width, _view.bounds.size.width / _streamAspectRatio);
+        }
+        displayLayer.position = CGPointMake(CGRectGetMidX(_view.bounds), CGRectGetMidY(_view.bounds));
+        displayLayer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height);
+        displayLayer.videoGravity = AVLayerVideoGravityResize;
 
-    // Hide the layer until we get an IDR frame. This ensures we
-    // can see the loading progress label as the stream is starting.
-    displayLayer.hidden = YES;
-        
-    if (oldLayer != nil) {
-        // Switch out the old display layer with the new one
-        [_view.layer replaceSublayer:oldLayer with:displayLayer];
-    }
-    else {
-        [_view.layer addSublayer:displayLayer];
+        // Hide the layer until we get an IDR frame. This ensures we
+        // can see the loading progress label as the stream is starting.
+        displayLayer.hidden = YES;
+            
+        if (oldLayer != nil) {
+            // Switch out the old display layer with the new one
+            [_view.layer replaceSublayer:oldLayer with:displayLayer];
+        }
+        else {
+            [_view.layer addSublayer:displayLayer];
+        }
     }
     
 }

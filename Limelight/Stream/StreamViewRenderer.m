@@ -52,7 +52,7 @@ static const NSUInteger MaxBuffersInFlight = 3;
         NSError *error;
 
         _device = view.device;
-        view.framebufferOnly = true;
+//        view.framebufferOnly = true;
         view.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
         view.preferredFramesPerSecond = 120;
         
