@@ -212,6 +212,8 @@
 		8CB5F9572BD020B8003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = "mul.lproj/Launch Screen.xcstrings"; sourceTree = "<group>"; };
 		8CB5F9582BD020E2003E91FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/iPad.storyboard; sourceTree = "<group>"; };
 		8CB5F95B2BD020E2003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/iPad.xcstrings; sourceTree = "<group>"; };
+		8CE512402BDAC24500134C94 /* make-release-ipa.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "make-release-ipa.yml"; path = ".github/workflows/make-release-ipa.yml"; sourceTree = "<group>"; };
+		8CE512412BDAC25900134C94 /* build-ipa.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "build-ipa.yml"; path = ".github/workflows/build-ipa.yml"; sourceTree = "<group>"; };
 		9803CCAB254F9EAF00EE185E /* ConnectionCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionCallbacks.h; sourceTree = "<group>"; };
 		98132E8C20BC9A62007A053F /* Moonlight v1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moonlight v1.1.xcdatamodel"; sourceTree = "<group>"; };
 		98181BE82791275D00E43572 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL2/lib/iOS/libSDL2.a; sourceTree = "<group>"; };
@@ -540,6 +542,8 @@
 		FB290CE519B2C406004C83CF = {
 			isa = PBXGroup;
 			children = (
+				8CE512412BDAC25900134C94 /* build-ipa.yml */,
+				8CE512402BDAC24500134C94 /* make-release-ipa.yml */,
 				9896219423D15C2900211983 /* X1Kit */,
 				98AB2E7F1CAD46830089BB98 /* moonlight-common.xcodeproj */,
 				FB290CF919B2C406004C83CF /* Moonlight */,
