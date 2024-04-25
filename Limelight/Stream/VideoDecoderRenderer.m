@@ -36,7 +36,7 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     
     CADisplayLink* _displayLink;
     BOOL framePacing;
-    NSInteger metalFxMultiplier;
+    NSInteger _metalFxMultiplier;
     
     VTDecompressionSessionRef decompressionSession;
 }
@@ -47,6 +47,7 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
         CFRelease(formatDesc);
         formatDesc = nil;
     }
+
     [self initializeVTDecompressSession:false];
     CALayer *oldLayer = displayLayer;
         
@@ -101,6 +102,11 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
                                               (__bridge CFDictionaryRef _Nullable)(pixelAttributes),
                                               nil,
                                               &decompressionSession);
+    if (@available(iOS 16.0,*)) {
+        StreamViewRenderer* renderer = _view.delegate;
+        [renderer setMetalFxEnabled:[self isMetalFxAvailable]];
+        [renderer setResolutionMultiplier:_metalFxMultiplier];
+    }
     if (status != noErr) {
         Log(LOG_E, @"Failed to instance VTDecompressionSessionRef, status %d", status);
     }
@@ -115,7 +121,7 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     _callbacks = callbacks;
     _streamAspectRatio = aspectRatio;
     framePacing = useFramePacing;
-    metalFxMultiplier = metalFxMultiplier;
+    _metalFxMultiplier = metalFxMultiplier;
     
     parameterSetBuffers = [[NSMutableArray alloc] init];
     
@@ -126,7 +132,7 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
 
 - (BOOL)isMetalFxAvailable {
     if (@available(iOS 16.0, *)) {
-        return metalFxMultiplier > 1 && masteringDisplayColorVolume == nil;
+        return _metalFxMultiplier > 1 && masteringDisplayColorVolume == nil;
     }
     return false;
 }
@@ -640,8 +646,6 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
     if ([self isMetalFxAvailable] && (videoFormat &  VIDEO_FORMAT_MASK_H265) ) {
         if (@available(iOS 16.0, *)) {
             StreamViewRenderer* renderer = _view.delegate;
-            [renderer setMetalFxEnabled:[self isMetalFxAvailable]];
-            [renderer setResolutionMultiplier:metalFxMultiplier];
             status = VTDecompressionSessionDecodeFrameWithOutputHandler(decompressionSession,
                                                                sampleBuffer,
                                                                0,

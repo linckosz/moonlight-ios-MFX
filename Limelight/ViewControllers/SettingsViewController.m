@@ -239,7 +239,13 @@ BOOL isCustomResolution(CGSize res) {
     else {
         [self.hdrSelector setSelectedSegmentIndex:currentSettings.enableHdr ? 1 : 0];
     }
-    
+    [self.metalFxSelector setSelectedSegmentIndex:[self getMetalFxMultiplier:[currentSettings.metalFxMultiplier integerValue]]];
+    if (!VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC)) {
+        [self.metalFxSelector setEnabled:false];
+        [self.metalFxSelector setSelectedSegmentIndex:0];
+    }
+    [self.codecSelector addTarget:self action:@selector(updateMetalFxOption) forControlEvents:UIControlEventValueChanged];
+    [self.hdrSelector addTarget:self action:@selector(updateMetalFxOption) forControlEvents:UIControlEventValueChanged];
     [self.touchModeSelector setSelectedSegmentIndex:currentSettings.absoluteTouchMode ? 1 : 0];
     [self.touchModeSelector addTarget:self action:@selector(touchModeChanged) forControlEvents:UIControlEventValueChanged];
     [self.statsOverlaySelector setSelectedSegmentIndex:currentSettings.statsOverlay ? 1 : 0];
@@ -263,6 +269,16 @@ BOOL isCustomResolution(CGSize res) {
     [self.bitrateSlider addTarget:self action:@selector(bitrateSliderMoved) forControlEvents:UIControlEventValueChanged];
     [self updateBitrateText];
     [self updateResolutionDisplayViewText];
+}
+
+- (void)updateMetalFxOption {
+    if (!VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC) || [self.hdrSelector selectedSegmentIndex] == 1
+        || [self.codecSelector selectedSegmentIndex] != 1) {
+        [self.metalFxSelector setEnabled:false];
+        [self.metalFxSelector setSelectedSegmentIndex:0];
+    }else {
+        [self.metalFxSelector setEnabled:true];
+    }
 }
 
 - (void) touchModeChanged {
@@ -522,8 +538,8 @@ BOOL isCustomResolution(CGSize res) {
     return resolutionTable[[self.resolutionSelector selectedSegmentIndex]].width;
 }
 
-- (NSInteger) getMetalFxMultiplier {
-    switch ([self.metalFxSelector selectedSegmentIndex]) {
+- (NSInteger) getMetalFxMultiplier:(NSInteger)index {
+    switch (index) {
         case 0:
             return 0;
         case 1:
@@ -541,7 +557,7 @@ BOOL isCustomResolution(CGSize res) {
     NSInteger height = [self getChosenStreamHeight];
     NSInteger width = [self getChosenStreamWidth];
     NSInteger onscreenControls = [self.onscreenControlSelector selectedSegmentIndex];
-    NSInteger metalFxMultiplier = [self getMetalFxMultiplier];
+    NSInteger metalFxMultiplier = [self getMetalFxMultiplier:self.metalFxSelector.selectedSegmentIndex];
     BOOL optimizeGames = [self.optimizeSettingsSelector selectedSegmentIndex] == 1;
     BOOL multiController = [self.multiControllerSelector selectedSegmentIndex] == 1;
     BOOL swapABXYButtons = [self.swapABXYButtonsSelector selectedSegmentIndex] == 1;

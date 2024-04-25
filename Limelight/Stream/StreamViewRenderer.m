@@ -153,22 +153,19 @@ static const NSUInteger MaxBuffersInFlight = 3;
 }
 - (void)setMetalFxEnabled:(BOOL)enabled; {
     _metalFxEnabled = enabled;
-    [self updateMetalFx];
 }
 
 - (void)updateMetalFx; {
     if (_metalFxEnabled && _resolutionMultiplier > 1) {
         if (lumaUpscaler == nil) {
-            lumaUpscaler = [self allocMetalFxScaler:MTLPixelFormatR8Unorm];
+            lumaUpscaler = [self allocMetalFxScaler:MTLPixelFormatR8Unorm withWidth:_lumaTextureInputWidth withHeight:_lumaTextureInputHeight];
             _lumaUpscaledTexture = [self upscalingTexture:MTLPixelFormatR8Unorm withWidth:_lumaTextureInputWidth * _resolutionMultiplier withHeight:_lumaTextureInputHeight * _resolutionMultiplier];
         }
         if (chromaUpscaler == nil) {
-            chromaUpscaler = [self allocMetalFxScaler:MTLPixelFormatRG8Unorm];
+            chromaUpscaler = [self allocMetalFxScaler:MTLPixelFormatRG8Unorm withWidth:_chromaTextureInputWidth withHeight:_chromaTextureInputHeight];
             _chromaUpscaledTexture = [self upscalingTexture:MTLPixelFormatRG8Unorm withWidth:_chromaTextureInputWidth * _resolutionMultiplier withHeight:_chromaTextureInputHeight * _resolutionMultiplier];
         }
     }else {
-        [_lumaTexture setPurgeableState:MTLPurgeableStateEmpty];
-        [_chromaUpscaledTexture setPurgeableState:MTLPurgeableStateEmpty];
         _lumaUpscaledTexture = nil;
         _chromaUpscaledTexture = nil;
         lumaUpscaler = nil;
@@ -176,12 +173,12 @@ static const NSUInteger MaxBuffersInFlight = 3;
     }
 }
 
-- (id<MTLFXSpatialScaler>)allocMetalFxScaler:(NSInteger)pixelFormat; {
+- (id<MTLFXSpatialScaler>)allocMetalFxScaler:(NSInteger)pixelFormat withWidth:(size_t)width withHeight:(size_t)height; {
     MTLFXSpatialScalerDescriptor* descriptor = [MTLFXSpatialScalerDescriptor new ];
-    descriptor.inputWidth = _chromaTextureInputWidth;
-    descriptor.inputHeight = _chromaTextureInputHeight;
-    descriptor.outputWidth = _chromaTextureInputWidth * _resolutionMultiplier;
-    descriptor.outputHeight = _chromaTextureInputHeight * _resolutionMultiplier;
+    descriptor.inputWidth = width;
+    descriptor.inputHeight = height;
+    descriptor.outputWidth = width * _resolutionMultiplier;
+    descriptor.outputHeight = height * _resolutionMultiplier;
     descriptor.colorProcessingMode = MTLFXSpatialScalerColorProcessingModePerceptual;
     descriptor.colorTextureFormat = pixelFormat;
     descriptor.outputTextureFormat = pixelFormat;
