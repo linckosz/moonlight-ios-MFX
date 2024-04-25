@@ -769,6 +769,18 @@
         }
       }
     },
+    "uc8-hl-XcV.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"MetalFx\"; ObjectID = \"uc8-hl-XcV\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "MetalFx"
+          }
+        }
+      }
+    },
     "WGf-9d-eAm.segmentTitles[0]" : {
       "comment" : "Class = \"UISegmentedControl\"; WGf-9d-eAm.segmentTitles[0] = \"Off\"; ObjectID = \"WGf-9d-eAm\";",
       "extractionState" : "extracted_with_value",
@@ -873,6 +885,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "图像策略"
+          }
+        }
+      }
+    },
+    "zRw-Xa-zhh.segmentTitles[0]" : {
+      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[0] = \"Off\"; ObjectID = \"zRw-Xa-zhh\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Off"
+          }
+        }
+      }
+    },
+    "zRw-Xa-zhh.segmentTitles[1]" : {
+      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[1] = \"2\"; ObjectID = \"zRw-Xa-zhh\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "2"
+          }
+        }
+      }
+    },
+    "zRw-Xa-zhh.segmentTitles[2]" : {
+      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[2] = \"4\"; ObjectID = \"zRw-Xa-zhh\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "4"
           }
         }
       }

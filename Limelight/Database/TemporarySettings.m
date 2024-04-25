@@ -86,6 +86,7 @@
     self.absoluteTouchMode = settings.absoluteTouchMode;
     self.statsOverlay = settings.statsOverlay;
     self.touchPassthrough = settings.touchPassthrough;
+    self.metalFxMultiplier = settings.metalFxMultiplier;
 #endif
     self.uniqueId = settings.uniqueId;
     

@@ -39,6 +39,9 @@ static const NSUInteger MaxBuffersInFlight = 3;
     size_t _lumaTextureInputHeight;
     size_t _chromaTextureInputWidth;
     size_t _chromaTextureInputHeight;
+    
+    size_t _resolutionMultiplier;
+    BOOL _metalFxEnabled;
 }
 
 -(nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)view;
@@ -49,7 +52,7 @@ static const NSUInteger MaxBuffersInFlight = 3;
         NSError *error;
 
         _device = view.device;
-//        view.framebufferOnly = true;
+        view.framebufferOnly = true;
         view.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
         view.preferredFramesPerSecond = 120;
         
@@ -74,7 +77,8 @@ static const NSUInteger MaxBuffersInFlight = 3;
 
         // Create the command queue
         _commandQueue = [_device newCommandQueue];
-        
+        _resolutionMultiplier = 2;
+        _metalFxEnabled = false;
     }
 
     return self;
@@ -139,33 +143,49 @@ static const NSUInteger MaxBuffersInFlight = 3;
     _lumaTexture = luma;
     _chromaTexture = chroma;
     
-    if (@available(iOS 16.0, *)) {
-        size_t upscaler_multiplier = 4;
+    [self updateMetalFx];
+}
+- (void)setResolutionMultiplier:(size_t)m {
+    _resolutionMultiplier = m;
+    if (_resolutionMultiplier <= 1) {
+        [self setMetalFxEnabled:false];
+    }
+}
+- (void)setMetalFxEnabled:(BOOL)enabled; {
+    _metalFxEnabled = enabled;
+    [self updateMetalFx];
+}
+
+- (void)updateMetalFx; {
+    if (_metalFxEnabled && _resolutionMultiplier > 1) {
         if (lumaUpscaler == nil) {
-            MTLFXSpatialScalerDescriptor* descriptor = [MTLFXSpatialScalerDescriptor new ];
-            descriptor.inputWidth = _lumaTextureInputWidth;
-            descriptor.inputHeight = _lumaTextureInputHeight;
-            descriptor.outputWidth = _lumaTextureInputWidth * upscaler_multiplier;
-            descriptor.outputHeight = _lumaTextureInputHeight * upscaler_multiplier;
-            descriptor.colorProcessingMode = MTLFXSpatialScalerColorProcessingModePerceptual;
-            descriptor.colorTextureFormat = MTLPixelFormatR8Unorm;
-            descriptor.outputTextureFormat = MTLPixelFormatR8Unorm;
-            lumaUpscaler = [descriptor newSpatialScalerWithDevice:_device];
+            lumaUpscaler = [self allocMetalFxScaler:MTLPixelFormatR8Unorm];
+            _lumaUpscaledTexture = [self upscalingTexture:MTLPixelFormatR8Unorm withWidth:_lumaTextureInputWidth * _resolutionMultiplier withHeight:_lumaTextureInputHeight * _resolutionMultiplier];
         }
         if (chromaUpscaler == nil) {
-            MTLFXSpatialScalerDescriptor* descriptor2 = [MTLFXSpatialScalerDescriptor new ];
-            descriptor2.inputWidth = _chromaTextureInputWidth;
-            descriptor2.inputHeight = _chromaTextureInputHeight;
-            descriptor2.outputWidth = _chromaTextureInputWidth * upscaler_multiplier;
-            descriptor2.outputHeight = _chromaTextureInputHeight * upscaler_multiplier;
-            descriptor2.colorProcessingMode = MTLFXSpatialScalerColorProcessingModePerceptual;
-            descriptor2.colorTextureFormat = MTLPixelFormatRG8Unorm;
-            descriptor2.outputTextureFormat = MTLPixelFormatRG8Unorm;
-            chromaUpscaler = [descriptor2 newSpatialScalerWithDevice:_device];
-            _lumaUpscaledTexture = [self upscalingTexture:MTLPixelFormatR8Unorm withWidth:_lumaTextureInputWidth * upscaler_multiplier withHeight:_lumaTextureInputHeight * upscaler_multiplier];
-            _chromaUpscaledTexture = [self upscalingTexture:MTLPixelFormatRG8Unorm withWidth:_chromaTextureInputWidth * upscaler_multiplier withHeight:_chromaTextureInputHeight * upscaler_multiplier];
+            chromaUpscaler = [self allocMetalFxScaler:MTLPixelFormatRG8Unorm];
+            _chromaUpscaledTexture = [self upscalingTexture:MTLPixelFormatRG8Unorm withWidth:_chromaTextureInputWidth * _resolutionMultiplier withHeight:_chromaTextureInputHeight * _resolutionMultiplier];
         }
+    }else {
+        [_lumaTexture setPurgeableState:MTLPurgeableStateEmpty];
+        [_chromaUpscaledTexture setPurgeableState:MTLPurgeableStateEmpty];
+        _lumaUpscaledTexture = nil;
+        _chromaUpscaledTexture = nil;
+        lumaUpscaler = nil;
+        chromaUpscaler = nil;
     }
+}
+
+- (id<MTLFXSpatialScaler>)allocMetalFxScaler:(NSInteger)pixelFormat; {
+    MTLFXSpatialScalerDescriptor* descriptor = [MTLFXSpatialScalerDescriptor new ];
+    descriptor.inputWidth = _chromaTextureInputWidth;
+    descriptor.inputHeight = _chromaTextureInputHeight;
+    descriptor.outputWidth = _chromaTextureInputWidth * _resolutionMultiplier;
+    descriptor.outputHeight = _chromaTextureInputHeight * _resolutionMultiplier;
+    descriptor.colorProcessingMode = MTLFXSpatialScalerColorProcessingModePerceptual;
+    descriptor.colorTextureFormat = pixelFormat;
+    descriptor.outputTextureFormat = pixelFormat;
+    return [descriptor newSpatialScalerWithDevice:_device];
 }
 
 - (void)drawInMTKView:(nonnull MTKView *)view
@@ -192,7 +212,7 @@ static const NSUInteger MaxBuffersInFlight = 3;
             chromaUpscaler.colorTexture = _chromaTexture;
             chromaUpscaler.outputTexture = _chromaUpscaledTexture;
             
-            if (_lumaUpscaledTexture != nil && _chromaUpscaledTexture != nil) {
+            if (_lumaUpscaledTexture != nil && _chromaUpscaledTexture != nil && _metalFxEnabled && _resolutionMultiplier > 1) {
                 [renderEncoder setFragmentTexture:_lumaUpscaledTexture atIndex:0];
                 [renderEncoder setFragmentTexture:_chromaUpscaledTexture atIndex:1];
             }else{
@@ -206,7 +226,7 @@ static const NSUInteger MaxBuffersInFlight = 3;
         [renderEncoder popDebugGroup];
         
         [renderEncoder endEncoding];
-        if (_lumaTexture != nil && _chromaTexture != nil) {
+        if (_lumaTexture != nil && _chromaTexture != nil && _metalFxEnabled && _resolutionMultiplier > 1) {
             [lumaUpscaler encodeToCommandBuffer:commandBuffer];
             [chromaUpscaler encodeToCommandBuffer:commandBuffer];
         }

@@ -27,26 +27,59 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     int videoFormat;
     int frameRate;
     
+    AVSampleBufferDisplayLayer* displayLayer;
     NSMutableArray *parameterSetBuffers;
     NSData *masteringDisplayColorVolume;
     NSData *contentLightLevelInfo;
+
     CMVideoFormatDescriptionRef formatDesc;
     
     CADisplayLink* _displayLink;
     BOOL framePacing;
+    NSInteger metalFxMultiplier;
     
     VTDecompressionSessionRef decompressionSession;
 }
 
 - (void)reinitializeDisplayLayer
 {
-
-    
     if (formatDesc != nil) {
         CFRelease(formatDesc);
         formatDesc = nil;
     }
     [self initializeVTDecompressSession:false];
+    CALayer *oldLayer = displayLayer;
+        
+    displayLayer = [[AVSampleBufferDisplayLayer alloc] init];
+    displayLayer.backgroundColor = [UIColor blackColor].CGColor;
+        
+    // Ensure the AVSampleBufferDisplayLayer is sized to preserve the aspect ratio
+    // of the video stream. We used to use AVLayerVideoGravityResizeAspect, but that
+    // respects the PAR encoded in the SPS which causes our computed video-relative
+    // touch location to be wrong in StreamView if the aspect ratio of the host
+    // desktop doesn't match the aspect ratio of the stream.
+    CGSize videoSize;
+    if (_view.bounds.size.width > _view.bounds.size.height * _streamAspectRatio) {
+        videoSize = CGSizeMake(_view.bounds.size.height * _streamAspectRatio, _view.bounds.size.height);
+    } else {
+        videoSize = CGSizeMake(_view.bounds.size.width, _view.bounds.size.width / _streamAspectRatio);
+    }
+    displayLayer.position = CGPointMake(CGRectGetMidX(_view.bounds), CGRectGetMidY(_view.bounds));
+    displayLayer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height);
+    displayLayer.videoGravity = AVLayerVideoGravityResize;
+
+    // Hide the layer until we get an IDR frame. This ensures we
+    // can see the loading progress label as the stream is starting.
+    displayLayer.hidden = YES;
+        
+    if (oldLayer != nil) {
+        // Switch out the old display layer with the new one
+        [_view.layer replaceSublayer:oldLayer with:displayLayer];
+    }
+    else {
+        [_view.layer addSublayer:displayLayer];
+    }
+    
 }
 
 - (void) initializeVTDecompressSession:(Boolean)init {
@@ -74,6 +107,7 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
 }
 
 - (id)initWithView:(StreamView*)view callbacks:(id<ConnectionCallbacks>)callbacks streamAspectRatio:(float)aspectRatio useFramePacing:(BOOL)useFramePacing
+ metalFxMultiplier:(NSInteger)metalFxMultiplier
 {
     self = [super init];
     
@@ -81,12 +115,20 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     _callbacks = callbacks;
     _streamAspectRatio = aspectRatio;
     framePacing = useFramePacing;
+    metalFxMultiplier = metalFxMultiplier;
     
     parameterSetBuffers = [[NSMutableArray alloc] init];
     
     [self reinitializeDisplayLayer];
     
     return self;
+}
+
+- (BOOL)isMetalFxAvailable {
+    if (@available(iOS 16.0, *)) {
+        return metalFxMultiplier > 1 && masteringDisplayColorVolume == nil;
+    }
+    return false;
 }
 
 - (void)setupWithVideoFormat:(int)videoFormat width:(int)videoWidth height:(int)videoHeight frameRate:(int)frameRate
@@ -510,8 +552,23 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
         free(data);
         return DR_NEED_IDR;
     }
-    if (decompressionSession == NULL) {
+    if (decompressionSession == NULL && [self isMetalFxAvailable]) {
         [self initializeVTDecompressSession:true];
+    }
+    
+    if ([self isMetalFxAvailable]) {
+        // Check for previous decoder errors before doing anything
+        if (displayLayer.status == AVQueuedSampleBufferRenderingStatusFailed) {
+            Log(LOG_E, @"Display layer rendering failed: %@", displayLayer.error);
+            
+            // Recreate the display layer. We are already on the main thread,
+            // so this is safe to do right here.
+            [self reinitializeDisplayLayer];
+            
+            // Request an IDR frame to initialize the new decoder
+            free(data);
+            return DR_NEED_IDR;
+        }
     }
     
     // Now we're decoding actual frame data here
@@ -580,33 +637,48 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
         return DR_NEED_IDR;
     }
 
-    StreamViewRenderer* renderer = _view.delegate;
-    status = VTDecompressionSessionDecodeFrameWithOutputHandler(decompressionSession,
-                                                       sampleBuffer,
-                                                       0,
-                                                       NULL,
-                                                       ^(OSStatus status, VTDecodeInfoFlags infoFlags, CVImageBufferRef  _Nullable imageBuffer, CMTime presentationTimestamp, CMTime presentationDuration) {
-                                                               if (status != noErr)
-                                                               {
-                                                                   NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
-                                                                   Log(LOG_E, @"Decompression session error: %@", error);
-                                                                   LiRequestIdrFrame();
-                                                                   return;
-                                                               }
-                                                        
-        CVPixelBufferRetain(imageBuffer);
-        CVPixelBufferLockBaseAddress(imageBuffer, kCVPixelBufferLock_ReadOnly);
-        [renderer updateFrameTexture:imageBuffer];
-        CVPixelBufferUnlockBaseAddress(imageBuffer,kCVPixelBufferLock_ReadOnly);
-        CVPixelBufferRelease(imageBuffer);
-    });
+    if ([self isMetalFxAvailable] && (videoFormat &  VIDEO_FORMAT_MASK_H265) ) {
+        if (@available(iOS 16.0, *)) {
+            StreamViewRenderer* renderer = _view.delegate;
+            [renderer setMetalFxEnabled:[self isMetalFxAvailable]];
+            [renderer setResolutionMultiplier:metalFxMultiplier];
+            status = VTDecompressionSessionDecodeFrameWithOutputHandler(decompressionSession,
+                                                               sampleBuffer,
+                                                               0,
+                                                               NULL,
+                                                               ^(OSStatus status, VTDecodeInfoFlags infoFlags, CVImageBufferRef  _Nullable imageBuffer, CMTime presentationTimestamp, CMTime presentationDuration) {
+                                                                       if (status != noErr)
+                                                                       {
+                                                                           NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
+                                                                           Log(LOG_E, @"Decompression session error: %@", error);
+                                                                           LiRequestIdrFrame();
+                                                                           return;
+                                                                       }
+                                                                
+                CVPixelBufferRetain(imageBuffer);
+                CVPixelBufferLockBaseAddress(imageBuffer, kCVPixelBufferLock_ReadOnly);
+                [renderer updateFrameTexture:imageBuffer];
+                CVPixelBufferUnlockBaseAddress(imageBuffer,kCVPixelBufferLock_ReadOnly);
+                CVPixelBufferRelease(imageBuffer);
+            });
+        } else {
+            // Enqueue the next frame
+            [self->displayLayer enqueueSampleBuffer:sampleBuffer];
+        }
+    } else {
+        // Enqueue the next frame
+        [self->displayLayer enqueueSampleBuffer:sampleBuffer];
+    }
+
     if (status != noErr) {
         Log(LOG_E, @"Unable to decode");
     }
 
     
     if (du->frameType == FRAME_TYPE_IDR) {
-
+        // Ensure the layer is visible now
+        self->displayLayer.hidden = NO;
+        
         // Tell our parent VC to hide the progress indicator
         [self->_callbacks videoContentShown];
     }

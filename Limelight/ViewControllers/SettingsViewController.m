@@ -522,12 +522,26 @@ BOOL isCustomResolution(CGSize res) {
     return resolutionTable[[self.resolutionSelector selectedSegmentIndex]].width;
 }
 
+- (NSInteger) getMetalFxMultiplier {
+    switch ([self.metalFxSelector selectedSegmentIndex]) {
+        case 0:
+            return 0;
+        case 1:
+            return 2;
+        case 2:
+            return 4;
+        default:
+            return 0;
+    }
+}
+
 - (void) saveSettings {
     DataManager* dataMan = [[DataManager alloc] init];
     NSInteger framerate = [self getChosenFrameRate];
     NSInteger height = [self getChosenStreamHeight];
     NSInteger width = [self getChosenStreamWidth];
     NSInteger onscreenControls = [self.onscreenControlSelector selectedSegmentIndex];
+    NSInteger metalFxMultiplier = [self getMetalFxMultiplier];
     BOOL optimizeGames = [self.optimizeSettingsSelector selectedSegmentIndex] == 1;
     BOOL multiController = [self.multiControllerSelector selectedSegmentIndex] == 1;
     BOOL swapABXYButtons = [self.swapABXYButtonsSelector selectedSegmentIndex] == 1;
@@ -555,7 +569,8 @@ BOOL isCustomResolution(CGSize res) {
                       btMouseSupport:btMouseSupport
                    absoluteTouchMode:absoluteTouchMode
                         statsOverlay:statsOverlay
-                    touchPassthrough:touchPassthrough];
+                    touchPassthrough:touchPassthrough
+                    metalFxMultiplier:metalFxMultiplier];
 }
 
 - (void)didReceiveMemoryWarning {

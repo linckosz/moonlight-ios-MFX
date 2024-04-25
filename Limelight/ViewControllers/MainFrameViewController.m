@@ -661,6 +661,7 @@ static NSMutableSet* hostList;
     }
     
     _streamConfig.serverCodecModeSupport = app.host.serverCodecModeSupport;
+    _streamConfig.metalFxMultiplier = [streamSettings.metalFxMultiplier intValue];
     
     switch (streamSettings.preferredCodec) {
         case CODEC_PREF_AV1:

@@ -11,9 +11,11 @@
 @import AVFoundation;
 // Our platform independent renderer class.   Implements the MTKViewDelegate protocol which
 //   allows it to accept per-frame update and drawable resize callbacks.
-@interface StreamViewRenderer : NSObject <MTKViewDelegate>
+API_AVAILABLE(ios(16.0)) @interface StreamViewRenderer : NSObject <MTKViewDelegate>
 
 -(nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)view;
 - (void) updateFrameTexture:(nonnull CVImageBufferRef) imageBuffer;
+- (void)setResolutionMultiplier:(size_t)m;
+- (void)setMetalFxEnabled:(BOOL)enabled;
 @end
 

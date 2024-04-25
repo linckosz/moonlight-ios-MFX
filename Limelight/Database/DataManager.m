@@ -68,7 +68,8 @@
                   btMouseSupport:(BOOL)btMouseSupport
                absoluteTouchMode:(BOOL)absoluteTouchMode
                     statsOverlay:(BOOL)statsOverlay
-                touchPassthrough:(BOOL)touchPassthrough {
+                touchPassthrough:(BOOL)touchPassthrough
+               metalFxMultiplier:(NSInteger)metalFxMultiplier {
     
     [_managedObjectContext performBlockAndWait:^{
         Settings* settingsToSave = [self retrieveSettings];
@@ -89,6 +90,7 @@
         settingsToSave.absoluteTouchMode = absoluteTouchMode;
         settingsToSave.statsOverlay = statsOverlay;
         settingsToSave.touchPassthrough = touchPassthrough;
+        settingsToSave.metalFxMultiplier = [NSNumber numberWithInteger:metalFxMultiplier];
         
         
         [self saveData];

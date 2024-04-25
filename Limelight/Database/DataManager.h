@@ -29,7 +29,8 @@
                   btMouseSupport:(BOOL)btMouseSupport
                absoluteTouchMode:(BOOL)absoluteTouchMode
                     statsOverlay:(BOOL)statsOverlay
-                touchPassthrough:(BOOL)touchPassthrough;
+                touchPassthrough:(BOOL)touchPassthrough
+               metalFxMultiplier:(NSInteger)metalFxMultiplier;
 
 - (NSArray*) getHosts;
 - (void) updateHost:(TemporaryHost*)host;
