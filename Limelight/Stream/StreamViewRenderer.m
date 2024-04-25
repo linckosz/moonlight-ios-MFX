@@ -179,7 +179,7 @@ static const NSUInteger MaxBuffersInFlight = 3;
     descriptor.inputHeight = height;
     descriptor.outputWidth = width * _resolutionMultiplier;
     descriptor.outputHeight = height * _resolutionMultiplier;
-    descriptor.colorProcessingMode = MTLFXSpatialScalerColorProcessingModePerceptual;
+    descriptor.colorProcessingMode = MTLFXSpatialScalerColorProcessingModeLinear;
     descriptor.colorTextureFormat = pixelFormat;
     descriptor.outputTextureFormat = pixelFormat;
     return [descriptor newSpatialScalerWithDevice:_device];
