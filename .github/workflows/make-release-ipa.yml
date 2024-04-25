@@ -26,3 +26,4 @@ jobs:
             name: Moonlight-NE#${{ github.ref_name }}
             body: ${{ github.event.head_commit.message }}
             tag: ${{ github.ref_name }}
+            draft: false
