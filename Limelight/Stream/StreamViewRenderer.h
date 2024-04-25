@@ -7,6 +7,7 @@
 //
 
 #import <MetalKit/MetalKit.h>
+#import <MetalFX/MetalFX.h>
 @import AVFoundation;
 // Our platform independent renderer class.   Implements the MTKViewDelegate protocol which
 //   allows it to accept per-frame update and drawable resize callbacks.

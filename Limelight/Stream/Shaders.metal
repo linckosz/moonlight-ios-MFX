@@ -34,10 +34,9 @@ vertex TextureMappingVertex mapTexture(unsigned int vertex_id [[ vertex_id ]]) {
 fragment half4 displayTexture(TextureMappingVertex mappingVertex [[ stage_in ]],
                               texture2d<float, access::sample> texture [[ texture(0) ]],
                               texture2d<float, access::sample> texture1 [[ texture(1) ]]) {
-    constexpr sampler s(address::clamp_to_edge, filter::linear);
-    constexpr sampler colorSampler(mip_filter::linear,
-                                   mag_filter::linear,
-                                   min_filter::linear);
+    constexpr sampler colorSampler(mip_filter::nearest,
+                                   mag_filter::nearest,
+                                   min_filter::nearest);
     
     const float4x4 ycbcrToRGBTransform = float4x4(
         float4(+1.0000f, +1.0000f, +1.0000f, +0.0000f),
