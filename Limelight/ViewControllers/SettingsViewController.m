@@ -241,7 +241,14 @@ BOOL isCustomResolution(CGSize res) {
     }
     [self.metalFxSelector setSelectedSegmentIndex:[self getMetalFxMultiplier:[currentSettings.metalFxMultiplier integerValue]]];
     [self.hdrSelector addTarget:self action:@selector(updateMetalFxOption) forControlEvents:UIControlEventValueChanged];
-    [self.touchModeSelector setSelectedSegmentIndex:currentSettings.absoluteTouchMode ? 1 : 0];
+    NSInteger touchMode = 0;
+    if (currentSettings.absoluteTouchMode) {
+        touchMode = 1;
+    }
+    if (currentSettings.touchPassthrough) {
+        touchMode = 2;
+    }
+    [self.touchModeSelector setSelectedSegmentIndex:touchMode];
     [self.touchModeSelector addTarget:self action:@selector(touchModeChanged) forControlEvents:UIControlEventValueChanged];
     [self.statsOverlaySelector setSelectedSegmentIndex:currentSettings.statsOverlay ? 1 : 0];
     [self.btMouseSelector setSelectedSegmentIndex:currentSettings.btMouseSupport ? 1 : 0];
