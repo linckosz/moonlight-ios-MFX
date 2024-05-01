@@ -135,32 +135,34 @@
     [self.view addGestureRecognizer:_playPauseTapGestureRecognizer];
 
 #else
-    _exitSwipeRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgeSwiped)];
-    _exitSwipeRecognizer.edges = UIRectEdgeLeft;
-    _exitSwipeRecognizer.delaysTouchesBegan = NO;
-    _exitSwipeRecognizer.delaysTouchesEnded = NO;
-    
-    [self.view addGestureRecognizer:_exitSwipeRecognizer];
-    
-    _openKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openKeyboard)];
-    _openKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
-    _openKeyboardRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:_openKeyboardRecognizer];
-    
-    _closeKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
-    _closeKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
-    _closeKeyboardRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:_closeKeyboardRecognizer];
-    
-    _previousMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousMonitor)];
-    _previousMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-    _previousMonitorRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:_previousMonitorRecognizer];
-    
-    _nextMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextMonitor)];
-    _nextMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    _nextMonitorRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:_nextMonitorRecognizer];
+    if (!_settings.disableGestures) {
+        _exitSwipeRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgeSwiped)];
+        _exitSwipeRecognizer.edges = UIRectEdgeLeft;
+        _exitSwipeRecognizer.delaysTouchesBegan = NO;
+        _exitSwipeRecognizer.delaysTouchesEnded = NO;
+        
+        [self.view addGestureRecognizer:_exitSwipeRecognizer];
+        
+        _openKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openKeyboard)];
+        _openKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+        _openKeyboardRecognizer.numberOfTouchesRequired = 2;
+        [self.view addGestureRecognizer:_openKeyboardRecognizer];
+        
+        _closeKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+        _closeKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+        _closeKeyboardRecognizer.numberOfTouchesRequired = 2;
+        [self.view addGestureRecognizer:_closeKeyboardRecognizer];
+        
+        _previousMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousMonitor)];
+        _previousMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        _previousMonitorRecognizer.numberOfTouchesRequired = 2;
+        [self.view addGestureRecognizer:_previousMonitorRecognizer];
+        
+        _nextMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextMonitor)];
+        _nextMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        _nextMonitorRecognizer.numberOfTouchesRequired = 2;
+        [self.view addGestureRecognizer:_nextMonitorRecognizer];
+    }
 #endif
     
     _tipLabel = [[UILabel alloc] init];

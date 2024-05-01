@@ -325,6 +325,24 @@
         }
       }
     },
+    "DML-fi-0kb.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Gestures\"; ObjectID = \"DML-fi-0kb\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Gestures"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷手势"
+          }
+        }
+      }
+    },
     "glN-9Q-GKD.text" : {
       "comment" : "Class = \"UILabel\"; text = \"Citrix X1 Mouse Support\"; ObjectID = \"glN-9Q-GKD\";",
       "extractionState" : "extracted_with_value",
@@ -729,6 +747,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "启用"
+          }
+        }
+      }
+    },
+    "rYg-ka-Wxa.segmentTitles[0]" : {
+      "comment" : "Class = \"UISegmentedControl\"; rYg-ka-Wxa.segmentTitles[0] = \"Enabled\"; ObjectID = \"rYg-ka-Wxa\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Enabled"
+          }
+        }
+      }
+    },
+    "rYg-ka-Wxa.segmentTitles[1]" : {
+      "comment" : "Class = \"UISegmentedControl\"; rYg-ka-Wxa.segmentTitles[1] = \"Disabled\"; ObjectID = \"rYg-ka-Wxa\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Disabled"
           }
         }
       }

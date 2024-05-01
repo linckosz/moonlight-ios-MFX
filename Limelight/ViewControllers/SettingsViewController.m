@@ -269,6 +269,7 @@ BOOL isCustomResolution(CGSize res) {
     [self.bitrateSlider setMaximumValue:(sizeof(bitrateTable) / sizeof(*bitrateTable)) - 1];
     [self.bitrateSlider setValue:[self getSliderValueForBitrate:_bitrate] animated:YES];
     [self.bitrateSlider addTarget:self action:@selector(bitrateSliderMoved) forControlEvents:UIControlEventValueChanged];
+    [self.gesturesSelector setSelectedSegmentIndex:currentSettings.disableGestures ? 1 : 0];
     [self updateBitrateText];
     [self updateResolutionDisplayViewText];
 }
@@ -557,6 +558,7 @@ BOOL isCustomResolution(CGSize res) {
     BOOL touchPassthrough = [self.touchModeSelector selectedSegmentIndex] == 2;
     BOOL statsOverlay = [self.statsOverlaySelector selectedSegmentIndex] == 1;
     BOOL enableHdr = [self.hdrSelector selectedSegmentIndex] == 1;
+    BOOL gesturesDisabled = [self.gesturesSelector selectedSegmentIndex] == 1;
     [dataMan saveSettingsWithBitrate:_bitrate
                            framerate:framerate
                               height:height
@@ -574,7 +576,8 @@ BOOL isCustomResolution(CGSize res) {
                    absoluteTouchMode:absoluteTouchMode
                         statsOverlay:statsOverlay
                     touchPassthrough:touchPassthrough
-                    metalFxMultiplier:metalFxMultiplier];
+                    metalFxMultiplier:metalFxMultiplier
+                    gesturesDisabled:gesturesDisabled];
 }
 
 - (void)didReceiveMemoryWarning {

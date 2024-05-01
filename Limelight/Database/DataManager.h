@@ -30,7 +30,8 @@
                absoluteTouchMode:(BOOL)absoluteTouchMode
                     statsOverlay:(BOOL)statsOverlay
                 touchPassthrough:(BOOL)touchPassthrough
-               metalFxMultiplier:(NSInteger)metalFxMultiplier;
+               metalFxMultiplier:(NSInteger)metalFxMultiplier
+               gesturesDisabled:(BOOL)gesturesDisabled;
 
 - (NSArray*) getHosts;
 - (void) updateHost:(TemporaryHost*)host;
