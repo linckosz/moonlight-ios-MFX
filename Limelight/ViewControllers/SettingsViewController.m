@@ -240,11 +240,6 @@ BOOL isCustomResolution(CGSize res) {
         [self.hdrSelector setSelectedSegmentIndex:currentSettings.enableHdr ? 1 : 0];
     }
     [self.metalFxSelector setSelectedSegmentIndex:[self getMetalFxMultiplier:[currentSettings.metalFxMultiplier integerValue]]];
-    if (!VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC)) {
-        [self.metalFxSelector setEnabled:false];
-        [self.metalFxSelector setSelectedSegmentIndex:0];
-    }
-    [self.codecSelector addTarget:self action:@selector(updateMetalFxOption) forControlEvents:UIControlEventValueChanged];
     [self.hdrSelector addTarget:self action:@selector(updateMetalFxOption) forControlEvents:UIControlEventValueChanged];
     [self.touchModeSelector setSelectedSegmentIndex:currentSettings.absoluteTouchMode ? 1 : 0];
     [self.touchModeSelector addTarget:self action:@selector(touchModeChanged) forControlEvents:UIControlEventValueChanged];
