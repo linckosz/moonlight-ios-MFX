@@ -239,8 +239,16 @@ BOOL isCustomResolution(CGSize res) {
     else {
         [self.hdrSelector setSelectedSegmentIndex:currentSettings.enableHdr ? 1 : 0];
     }
-    
-    [self.touchModeSelector setSelectedSegmentIndex:currentSettings.absoluteTouchMode ? 1 : 0];
+    [self.metalFxSelector setSelectedSegmentIndex:[currentSettings.metalFxMultiplier integerValue]];
+    [self.hdrSelector addTarget:self action:@selector(updateMetalFxOption) forControlEvents:UIControlEventValueChanged];
+    NSInteger touchMode = 0;
+    if (currentSettings.absoluteTouchMode) {
+        touchMode = 1;
+    }
+    if (currentSettings.touchPassthrough) {
+        touchMode = 2;
+    }
+    [self.touchModeSelector setSelectedSegmentIndex:touchMode];
     [self.touchModeSelector addTarget:self action:@selector(touchModeChanged) forControlEvents:UIControlEventValueChanged];
     [self.statsOverlaySelector setSelectedSegmentIndex:currentSettings.statsOverlay ? 1 : 0];
     [self.btMouseSelector setSelectedSegmentIndex:currentSettings.btMouseSupport ? 1 : 0];
@@ -263,6 +271,15 @@ BOOL isCustomResolution(CGSize res) {
     [self.bitrateSlider addTarget:self action:@selector(bitrateSliderMoved) forControlEvents:UIControlEventValueChanged];
     [self updateBitrateText];
     [self updateResolutionDisplayViewText];
+}
+
+- (void)updateMetalFxOption {
+    if ([self.hdrSelector selectedSegmentIndex] == 1) {
+        [self.metalFxSelector setEnabled:false];
+        [self.metalFxSelector setSelectedSegmentIndex:0];
+    }else {
+        [self.metalFxSelector setEnabled:true];
+    }
 }
 
 - (void) touchModeChanged {
@@ -528,6 +545,7 @@ BOOL isCustomResolution(CGSize res) {
     NSInteger height = [self getChosenStreamHeight];
     NSInteger width = [self getChosenStreamWidth];
     NSInteger onscreenControls = [self.onscreenControlSelector selectedSegmentIndex];
+    NSInteger metalFxMultiplier = self.metalFxSelector.selectedSegmentIndex;
     BOOL optimizeGames = [self.optimizeSettingsSelector selectedSegmentIndex] == 1;
     BOOL multiController = [self.multiControllerSelector selectedSegmentIndex] == 1;
     BOOL swapABXYButtons = [self.swapABXYButtonsSelector selectedSegmentIndex] == 1;
@@ -555,7 +573,8 @@ BOOL isCustomResolution(CGSize res) {
                       btMouseSupport:btMouseSupport
                    absoluteTouchMode:absoluteTouchMode
                         statsOverlay:statsOverlay
-                    touchPassthrough:touchPassthrough];
+                    touchPassthrough:touchPassthrough
+                    metalFxMultiplier:metalFxMultiplier];
 }
 
 - (void)didReceiveMemoryWarning {

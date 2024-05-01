@@ -236,7 +236,21 @@ int ArInit(int audioConfiguration, POPUS_MULTISTREAM_CONFIGURATION opusConfig, v
     
     // Disable lowering volume of other audio streams (SDL sets AVAudioSessionCategoryOptionDuckOthers by default)
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
-    
+    // Probe for supported channel configurations
+    if (@available(iOS 15.0, *)) {
+
+        AVAudioSessionRouteDescription * route =[[AVAudioSession sharedInstance] currentRoute];
+        NSArray<AVAudioSessionPortDescription*>* outputs = route.outputs;
+        for(AVAudioSessionPortDescription* output in outputs) {
+            if (output.spatialAudioEnabled) {
+                NSError* error;
+                [[AVAudioSession sharedInstance] setSupportsMultichannelContent:true error:&error];
+                if (error != nil) {
+                    Log(LOG_E, @"Failed to setSupportsMultichannelContent : %@ ",error);
+                }
+            }
+        }
+    }
     return 0;
 }
 

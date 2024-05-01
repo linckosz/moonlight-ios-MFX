@@ -9,6 +9,7 @@
 #import "Connection.h"
 #import "StreamConfiguration.h"
 #import "StreamView.h"
+#import "StreamViewRenderer.h"
 
 #import <UIKit/UIKit.h>
 

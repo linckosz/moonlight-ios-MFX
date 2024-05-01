@@ -1,6 +1,18 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "0Dx-MB-2E8.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"MetalFx\"; ObjectID = \"0Dx-MB-2E8\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "MetalFx"
+          }
+        }
+      }
+    },
     "6w5-Md-NpV.text" : {
       "comment" : "Class = \"UILabel\"; text = \"Preferred Codec\"; ObjectID = \"6w5-Md-NpV\";",
       "extractionState" : "extracted_with_value",
@@ -141,6 +153,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "多手柄模式"
+          }
+        }
+      }
+    },
+    "bnx-Ii-a8p.segmentTitles[0]" : {
+      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[0] = \"Off\"; ObjectID = \"bnx-Ii-a8p\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Off"
+          }
+        }
+      }
+    },
+    "bnx-Ii-a8p.segmentTitles[1]" : {
+      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[1] = \"1.1x\"; ObjectID = \"bnx-Ii-a8p\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "1.1x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "1.1倍"
+          }
+        }
+      }
+    },
+    "bnx-Ii-a8p.segmentTitles[2]" : {
+      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[2] = \"1.3x\"; ObjectID = \"bnx-Ii-a8p\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "1.3x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.3倍"
+          }
+        }
+      }
+    },
+    "bnx-Ii-a8p.segmentTitles[3]" : {
+      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[3] = \"1.5x\"; ObjectID = \"bnx-Ii-a8p\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "1.5x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.5倍"
           }
         }
       }

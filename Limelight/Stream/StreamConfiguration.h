@@ -28,6 +28,7 @@
 @property BOOL swapABXYButtons;
 @property int audioConfiguration;
 @property int supportedVideoFormats;
+@property float metalFxMultiplier;
 @property BOOL multiController;
 @property BOOL useFramePacing;
 @property NSData* serverCert;

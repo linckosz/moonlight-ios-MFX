@@ -601,6 +601,21 @@ static NSMutableSet* hostList;
     [[self activeViewController] presentViewController:alertController animated:YES completion:nil];
 }
 
+- (float) getMetalFxMultiplier:(NSInteger)index {
+    switch (index) {
+        case 0:
+            return 0;
+        case 1:
+            return 1.1;
+        case 2:
+            return 1.3;
+        case 3:
+            return 1.5;
+        default:
+            return 0;
+    }
+}
+
 - (void) prepareToStreamApp:(TemporaryApp *)app {
     _streamConfig = [[StreamConfiguration alloc] init];
     _streamConfig.host = app.host.activeAddress;
@@ -661,6 +676,7 @@ static NSMutableSet* hostList;
     }
     
     _streamConfig.serverCodecModeSupport = app.host.serverCodecModeSupport;
+    _streamConfig.metalFxMultiplier = [self getMetalFxMultiplier:[streamSettings.metalFxMultiplier intValue]];
     
     switch (streamSettings.preferredCodec) {
         case CODEC_PREF_AV1:
