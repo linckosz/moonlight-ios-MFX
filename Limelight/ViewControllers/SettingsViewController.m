@@ -239,7 +239,7 @@ BOOL isCustomResolution(CGSize res) {
     else {
         [self.hdrSelector setSelectedSegmentIndex:currentSettings.enableHdr ? 1 : 0];
     }
-    [self.metalFxSelector setSelectedSegmentIndex:[self getMetalFxMultiplier:[currentSettings.metalFxMultiplier integerValue]]];
+    [self.metalFxSelector setSelectedSegmentIndex:[currentSettings.metalFxMultiplier integerValue]];
     [self.hdrSelector addTarget:self action:@selector(updateMetalFxOption) forControlEvents:UIControlEventValueChanged];
     NSInteger touchMode = 0;
     if (currentSettings.absoluteTouchMode) {
@@ -539,26 +539,13 @@ BOOL isCustomResolution(CGSize res) {
     return resolutionTable[[self.resolutionSelector selectedSegmentIndex]].width;
 }
 
-- (NSInteger) getMetalFxMultiplier:(NSInteger)index {
-    switch (index) {
-        case 0:
-            return 0;
-        case 1:
-            return 2;
-        case 2:
-            return 4;
-        default:
-            return 0;
-    }
-}
-
 - (void) saveSettings {
     DataManager* dataMan = [[DataManager alloc] init];
     NSInteger framerate = [self getChosenFrameRate];
     NSInteger height = [self getChosenStreamHeight];
     NSInteger width = [self getChosenStreamWidth];
     NSInteger onscreenControls = [self.onscreenControlSelector selectedSegmentIndex];
-    NSInteger metalFxMultiplier = [self getMetalFxMultiplier:self.metalFxSelector.selectedSegmentIndex];
+    NSInteger metalFxMultiplier = self.metalFxSelector.selectedSegmentIndex;
     BOOL optimizeGames = [self.optimizeSettingsSelector selectedSegmentIndex] == 1;
     BOOL multiController = [self.multiControllerSelector selectedSegmentIndex] == 1;
     BOOL swapABXYButtons = [self.swapABXYButtonsSelector selectedSegmentIndex] == 1;

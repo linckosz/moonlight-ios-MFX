@@ -170,25 +170,55 @@
       }
     },
     "bnx-Ii-a8p.segmentTitles[1]" : {
-      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[1] = \"2\"; ObjectID = \"bnx-Ii-a8p\";",
+      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[1] = \"1.1x\"; ObjectID = \"bnx-Ii-a8p\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "2"
+            "value" : "1.1x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "1.1倍"
           }
         }
       }
     },
     "bnx-Ii-a8p.segmentTitles[2]" : {
-      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[2] = \"4\"; ObjectID = \"bnx-Ii-a8p\";",
+      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[2] = \"1.3x\"; ObjectID = \"bnx-Ii-a8p\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "4"
+            "value" : "1.3x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.3倍"
+          }
+        }
+      }
+    },
+    "bnx-Ii-a8p.segmentTitles[3]" : {
+      "comment" : "Class = \"UISegmentedControl\"; bnx-Ii-a8p.segmentTitles[3] = \"1.5x\"; ObjectID = \"bnx-Ii-a8p\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "1.5x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.5倍"
           }
         }
       }

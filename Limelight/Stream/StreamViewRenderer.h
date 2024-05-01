@@ -15,7 +15,7 @@ API_AVAILABLE(ios(16.0)) @interface StreamViewRenderer : NSObject <MTKViewDelega
 
 -(nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)view;
 - (void) updateFrameTexture:(nonnull CVImageBufferRef) imageBuffer;
-- (void)setResolutionMultiplier:(size_t)m;
+- (void)setResolutionMultiplier:(float)m;
 - (void)setMetalFxEnabled:(BOOL)enabled;
 @end
 

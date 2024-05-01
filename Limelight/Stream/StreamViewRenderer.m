@@ -40,7 +40,7 @@ static const NSUInteger MaxBuffersInFlight = 3;
     size_t _chromaTextureInputWidth;
     size_t _chromaTextureInputHeight;
     
-    size_t _resolutionMultiplier;
+    float _resolutionMultiplier;
     BOOL _metalFxEnabled;
 }
 
@@ -165,7 +165,7 @@ static const NSUInteger MaxBuffersInFlight = 3;
     
     [self updateMetalFx];
 }
-- (void)setResolutionMultiplier:(size_t)m {
+- (void)setResolutionMultiplier:(float)m {
     _resolutionMultiplier = m;
     if (_resolutionMultiplier <= 1) {
         [self setMetalFxEnabled:false];

@@ -36,7 +36,7 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     
     CADisplayLink* _displayLink;
     BOOL framePacing;
-    NSInteger _metalFxMultiplier;
+    float _metalFxMultiplier;
     
     VTDecompressionSessionRef decompressionSession;
 }
@@ -50,10 +50,12 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
 
     [self initializeVTDecompressSession:false];
     CGSize videoSize;
-    if (_view.bounds.size.width > _view.bounds.size.height * _streamAspectRatio) {
-        videoSize = CGSizeMake(_view.bounds.size.height * _streamAspectRatio, _view.bounds.size.height);
+    CGFloat width = _view.bounds.size.width;
+    CGFloat height = _view.bounds.size.height;
+    if (width > height * _streamAspectRatio) {
+        videoSize = CGSizeMake(height * _streamAspectRatio, height);
     } else {
-        videoSize = CGSizeMake(_view.bounds.size.width, _view.bounds.size.width / _streamAspectRatio);
+        videoSize = CGSizeMake(width, width / _streamAspectRatio);
     }
     if (![self isMetalFxAvailable]) {
         CALayer *oldLayer = displayLayer;
@@ -118,7 +120,7 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
 }
 
 - (id)initWithView:(StreamView*)view callbacks:(id<ConnectionCallbacks>)callbacks streamAspectRatio:(float)aspectRatio useFramePacing:(BOOL)useFramePacing
- metalFxMultiplier:(NSInteger)metalFxMultiplier
+ metalFxMultiplier:(float)metalFxMultiplier
 {
     self = [super init];
     

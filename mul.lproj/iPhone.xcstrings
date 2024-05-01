@@ -902,25 +902,55 @@
       }
     },
     "zRw-Xa-zhh.segmentTitles[1]" : {
-      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[1] = \"2\"; ObjectID = \"zRw-Xa-zhh\";",
+      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[1] = \"1.1x\"; ObjectID = \"zRw-Xa-zhh\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "2"
+            "value" : "1.1x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.1倍"
           }
         }
       }
     },
     "zRw-Xa-zhh.segmentTitles[2]" : {
-      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[2] = \"4\"; ObjectID = \"zRw-Xa-zhh\";",
+      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[2] = \"1.3x\"; ObjectID = \"zRw-Xa-zhh\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "4"
+            "value" : "1.3x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.3倍"
+          }
+        }
+      }
+    },
+    "zRw-Xa-zhh.segmentTitles[3]" : {
+      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[3] = \"1.5x\"; ObjectID = \"zRw-Xa-zhh\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "1.5x"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1.5倍"
           }
         }
       }

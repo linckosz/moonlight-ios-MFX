@@ -179,7 +179,7 @@
     }
     
     float interval = stats.endTime - stats.startTime;
-    return [NSString stringWithFormat:@"Video stream: %dx%d %.2f FPS (Codec: %@)\nFrames dropped by your network connection: %.2f%%\nAverage network latency: %@%@\nMetalFx Upscaling: %d",
+    return [NSString stringWithFormat:@"Video stream: %dx%d %.2f FPS (Codec: %@)\nFrames dropped by your network connection: %.2f%%\nAverage network latency: %@%@\nTarget stream: %dx%d",
             _config.width,
             _config.height,
             stats.totalFrames / interval,
@@ -187,7 +187,8 @@
             stats.networkDroppedFrames / interval,
             latencyString,
             hostProcessingString,
-            _config.metalFxMultiplier];
+            (int)MAX(_config.width * _config.metalFxMultiplier, _config.width),
+            (int)MAX(_config.height * _config.metalFxMultiplier, _config.height)];
 }
 
 @end
