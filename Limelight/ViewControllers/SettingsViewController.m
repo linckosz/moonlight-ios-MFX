@@ -272,8 +272,7 @@ BOOL isCustomResolution(CGSize res) {
 }
 
 - (void)updateMetalFxOption {
-    if (!VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC) || [self.hdrSelector selectedSegmentIndex] == 1
-        || [self.codecSelector selectedSegmentIndex] != 1) {
+    if ([self.hdrSelector selectedSegmentIndex] == 1) {
         [self.metalFxSelector setEnabled:false];
         [self.metalFxSelector setSelectedSegmentIndex:0];
     }else {

@@ -189,6 +189,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
 - (void)stop
 {
     [_displayLink invalidate];
+    _displayLink = nil;
 }
 
 #define NALU_START_PREFIX_SIZE 3
@@ -645,7 +646,7 @@ int DrSubmitDecodeUnit(PDECODE_UNIT decodeUnit);
         return DR_NEED_IDR;
     }
 
-    if ([self isMetalFxAvailable] && (videoFormat &  VIDEO_FORMAT_MASK_H265) ) {
+    if ([self isMetalFxAvailable]) {
         if (@available(iOS 16.0, *)) {
             StreamViewRenderer* renderer = _view.delegate;
             status = VTDecompressionSessionDecodeFrameWithOutputHandler(decompressionSession,

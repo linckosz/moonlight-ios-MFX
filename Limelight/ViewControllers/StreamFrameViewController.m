@@ -349,7 +349,7 @@
 - (void) returnToMainFrame {
     // Reset display mode back to default
     [self updatePreferredDisplayMode:NO];
-    
+    [self->_streamView releaseDrawables];
     [_statsUpdateTimer invalidate];
     _statsUpdateTimer = nil;
     

@@ -103,13 +103,11 @@ static const NSUInteger MaxBuffersInFlight = 3;
         return nil;
     }
     
-    BOOL isPlanar = CVPixelBufferIsPlanar(imageBuffer);
     if (textureCache == nil) {
         CVMetalTextureCacheCreate(kCFAllocatorDefault, nil,_device,nil,&textureCache);
     }
-//        OSType format = CVPixelBufferGetPixelFormatType(imageBuffer);
-    size_t width  = isPlanar ? CVPixelBufferGetWidthOfPlane(imageBuffer,plane) : CVPixelBufferGetWidth(imageBuffer);
-    size_t height = isPlanar? CVPixelBufferGetHeightOfPlane(imageBuffer,plane) :CVPixelBufferGetHeight(imageBuffer);
+    size_t width  = CVPixelBufferGetWidthOfPlane(imageBuffer,plane);
+    size_t height = CVPixelBufferGetHeightOfPlane(imageBuffer,plane);
     if (width == 0 || height == 0) {
         return nil;
     }
@@ -138,8 +136,30 @@ static const NSUInteger MaxBuffersInFlight = 3;
 }
 - (void) updateFrameTexture:(nonnull CVImageBufferRef) buffer;
 {
-    id<MTLTexture> luma = [self texture:buffer withPlane:0 formatIn:MTLPixelFormatR8Unorm];
-    id<MTLTexture> chroma = [self texture:buffer withPlane:1 formatIn:MTLPixelFormatRG8Unorm];
+    MTLPixelFormat lumaPixelFormat,chromaPixelFormat;
+    switch (CVPixelBufferGetPixelFormatType(buffer)) {
+        case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange:
+        case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:
+            lumaPixelFormat = MTLPixelFormatR8Unorm;
+            chromaPixelFormat = MTLPixelFormatRG8Unorm;
+            break;
+        case kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange:
+        case kCVPixelFormatType_420YpCbCr10BiPlanarFullRange:
+            lumaPixelFormat = MTLPixelFormatR16Unorm;
+            chromaPixelFormat = MTLPixelFormatRG16Unorm;
+        case kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarVideoRange:
+        case kCVPixelFormatType_Lossless_420YpCbCr8BiPlanarFullRange:
+            lumaPixelFormat = MTLPixelFormatR8Unorm;
+            chromaPixelFormat = MTLPixelFormatRG8Unorm;
+            break;
+        default:
+            Log(LOG_E, @"Unsupport pixel format");
+            return;
+    }
+    id<MTLTexture> luma = [self texture:buffer withPlane:0 formatIn:lumaPixelFormat];
+    id<MTLTexture> chroma = [self texture:buffer withPlane:1 formatIn:chromaPixelFormat];
+    
+    
     _lumaTexture = luma;
     _chromaTexture = chroma;
     
@@ -185,14 +205,16 @@ static const NSUInteger MaxBuffersInFlight = 3;
     return [descriptor newSpatialScalerWithDevice:_device];
 }
 
-- (void)drawInMTKView:(nonnull MTKView *)view
-{
+- (void)render:(nonnull MTKView*)view {
     // Create a new command buffer for each render pass to the current drawable.
     id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
 
     // Obtain a renderPassDescriptor generated from the view's drawable textures.
-    MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
-
+    MTLRenderPassDescriptor *renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
+    renderPassDescriptor.colorAttachments[0].texture = view.currentDrawable.texture;
+    renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+    renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 0.0);
+    renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
     if(renderPassDescriptor != nil)
     {
         // Create a render command encoder.
@@ -234,6 +256,14 @@ static const NSUInteger MaxBuffersInFlight = 3;
 
     // Finalize rendering here & push the command buffer to the GPU.
     [commandBuffer commit];
+    
+}
+
+- (void)drawInMTKView:(nonnull MTKView *)view
+{
+    @autoreleasepool {
+        [self render:view];
+    }
 }
 
 - (void)mtkView:(nonnull MTKView *)view drawableSizeWillChange:(CGSize)size
