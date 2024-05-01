@@ -18,6 +18,7 @@
 		8C88B0382BC5CB0F002E3B1E /* PassthroughTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02B2BC5CB0F002E3B1E /* PassthroughTouchHandler.m */; };
 		8C88B0392BC5CB0F002E3B1E /* RelativeTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02D2BC5CB0F002E3B1E /* RelativeTouchHandler.m */; };
 		8C88B03A2BC5CB0F002E3B1E /* StreamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C88B02F2BC5CB0F002E3B1E /* StreamView.m */; };
+		8CB0ADEC2BE1F10600BE44C0 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 8CB0ADEB2BE1F10600BE44C0 /* Localizable.xcstrings */; };
 		8CB5F9522BD01C8F003E91FD /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9512BD01C8F003E91FD /* iPhone.storyboard */; };
 		8CB5F9562BD020B8003E91FD /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9552BD020B8003E91FD /* Launch Screen.xib */; };
 		8CB5F95A2BD020E2003E91FD /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5F9592BD020E2003E91FD /* iPad.storyboard */; };
@@ -209,6 +210,7 @@
 		8C88B02D2BC5CB0F002E3B1E /* RelativeTouchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelativeTouchHandler.m; sourceTree = "<group>"; };
 		8C88B02E2BC5CB0F002E3B1E /* StreamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamView.h; sourceTree = "<group>"; };
 		8C88B02F2BC5CB0F002E3B1E /* StreamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamView.m; sourceTree = "<group>"; };
+		8CB0ADEB2BE1F10600BE44C0 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		8CB5F94F2BD01AFC003E91FD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		8CB5F9502BD01C8F003E91FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/iPhone.storyboard; sourceTree = "<group>"; };
 		8CB5F9532BD01C8F003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/iPhone.xcstrings; sourceTree = "<group>"; };
@@ -216,14 +218,14 @@
 		8CB5F9572BD020B8003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = "mul.lproj/Launch Screen.xcstrings"; sourceTree = "<group>"; };
 		8CB5F9582BD020E2003E91FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/iPad.storyboard; sourceTree = "<group>"; };
 		8CB5F95B2BD020E2003E91FD /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/iPad.xcstrings; sourceTree = "<group>"; };
-		8CE512402BDAC24500134C94 /* make-release-ipa.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "make-release-ipa.yml"; path = ".github/workflows/make-release-ipa.yml"; sourceTree = "<group>"; };
-		8CE512412BDAC25900134C94 /* build-ipa.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "build-ipa.yml"; path = ".github/workflows/build-ipa.yml"; sourceTree = "<group>"; };
 		8CE512312BD96AA200134C94 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		8CE512322BD96ABD00134C94 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		8CE512342BD96DFB00134C94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8CE512362BD96EBD00134C94 /* StreamViewRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StreamViewRenderer.h; sourceTree = "<group>"; };
 		8CE512372BD96ED700134C94 /* StreamViewRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StreamViewRenderer.m; sourceTree = "<group>"; };
 		8CE5123B2BDAACBC00134C94 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8CE512402BDAC24500134C94 /* make-release-ipa.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "make-release-ipa.yml"; path = ".github/workflows/make-release-ipa.yml"; sourceTree = "<group>"; };
+		8CE512412BDAC25900134C94 /* build-ipa.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "build-ipa.yml"; path = ".github/workflows/build-ipa.yml"; sourceTree = "<group>"; };
 		9803CCAB254F9EAF00EE185E /* ConnectionCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionCallbacks.h; sourceTree = "<group>"; };
 		98132E8C20BC9A62007A053F /* Moonlight v1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Moonlight v1.1.xcdatamodel"; sourceTree = "<group>"; };
 		98181BE82791275D00E43572 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL2/lib/iOS/libSDL2.a; sourceTree = "<group>"; };
@@ -552,6 +554,7 @@
 		FB290CE519B2C406004C83CF = {
 			isa = PBXGroup;
 			children = (
+				8CB0ADEB2BE1F10600BE44C0 /* Localizable.xcstrings */,
 				8CE512412BDAC25900134C94 /* build-ipa.yml */,
 				8CE512402BDAC24500134C94 /* make-release-ipa.yml */,
 				8CE5123B2BDAACBC00134C94 /* README.md */,
@@ -1086,6 +1089,7 @@
 			files = (
 				8CB5F95A2BD020E2003E91FD /* iPad.storyboard in Resources */,
 				FB290CFE19B2C406004C83CF /* InfoPlist.strings in Resources */,
+				8CB0ADEC2BE1F10600BE44C0 /* Localizable.xcstrings in Resources */,
 				8CB5F9522BD01C8F003E91FD /* iPhone.storyboard in Resources */,
 				8CE5123C2BDAACBC00134C94 /* README.md in Resources */,
 				FB290D0919B2C406004C83CF /* Images.xcassets in Resources */,

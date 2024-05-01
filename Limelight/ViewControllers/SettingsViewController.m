@@ -20,7 +20,6 @@
 
 @dynamic overrideUserInterfaceStyle;
 
-static NSString* bitrateFormat = @"Bitrate: %.1f Mbps";
 static const int bitrateTable[] = {
     500,
     1000,
@@ -460,7 +459,7 @@ BOOL isCustomResolution(CGSize res) {
         [subview removeFromSuperview];
     }
     UILabel *label1 = [[UILabel alloc] init];
-    label1.text = @"Set PC/Game resolution: ";
+    label1.text = NSLocalizedString(@"Set PC/Game resolution:", "target resolution label");
     label1.font = [UIFont systemFontOfSize:fontSize];
     [label1 sizeToFit];
     label1.frame = CGRectMake(padding, (viewFrameHeight - label1.frame.size.height) / 2, label1.frame.size.width, label1.frame.size.height);
@@ -482,7 +481,7 @@ BOOL isCustomResolution(CGSize res) {
 
 - (void) updateBitrateText {
     // Display bitrate in Mbps
-    [self.bitrateLabel setText:[NSString stringWithFormat:bitrateFormat, _bitrate / 1000.]];
+    [self.bitrateLabel setText:[NSString stringWithFormat:NSLocalizedString(@"Bitrate: %.1f Mbps", ""), _bitrate / 1000.]];
 }
 
 - (NSInteger) getChosenFrameRate {

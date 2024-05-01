@@ -76,6 +76,12 @@
             "state" : "new",
             "value" : "Enabled"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用"
+          }
         }
       }
     },
@@ -87,6 +93,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Disabled"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "禁用"
           }
         }
       }
@@ -189,6 +201,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Off"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭"
           }
         }
       }
