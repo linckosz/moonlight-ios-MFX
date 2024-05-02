@@ -106,6 +106,14 @@
     });
 }
 
+-(void) enablePiP {
+    [_connection enablePiP];
+}
+
+-(void) stopPiP {
+    [_connection stopPiP];
+}
+
 - (void) stopStream
 {
     [_connection terminate];

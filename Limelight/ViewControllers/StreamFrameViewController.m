@@ -397,6 +397,7 @@
         [_inactivityTimer invalidate];
         _inactivityTimer = nil;
     }
+    [_streamMan stopPiP];
 }
 
 // This fires when the home button is pressed
@@ -407,8 +408,7 @@
         [_inactivityTimer invalidate];
         _inactivityTimer = nil;
     }
-    
-    [self returnToMainFrame];
+
 }
 
 - (void)edgeSwiped {

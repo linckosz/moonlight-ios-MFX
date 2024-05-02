@@ -8,6 +8,7 @@
 
 @import AVFoundation;
 @import VideoToolbox;
+@import AVKit;
 
 #import "ConnectionCallbacks.h"
 
@@ -23,6 +24,8 @@
 - (void)start;
 - (void)stop;
 - (void)setHdrMode:(BOOL)enabled;
+-(void) enablePiP;
+-(void) stopPiP;
 
 - (int)submitDecodeBuffer:(unsigned char *)data length:(int)length bufferType:(int)bufferType decodeUnit:(PDECODE_UNIT)du;
 

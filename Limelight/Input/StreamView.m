@@ -864,4 +864,51 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     [self releaseDrawables];
 }
 
+// pip start
+
+- (void)pictureInPictureControllerWillStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController {
+    Log(LOG_I, @"Starting PiP");
+}
+- (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController{
+        
+}
+- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController failedToStartPictureInPictureWithError:(NSError *)error{
+    Log(LOG_E,@"Failed to start PiP %@",error);
+}
+
+- (void)pictureInPictureControllerWillStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController {
+    
+}
+
+- (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController{
+    
+}
+
+- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL restored))completionHandler {
+    
+}
+
+- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController setPlaying:(BOOL)playing NS_SWIFT_NAME(pictureInPictureController(_:setPlaying:)){
+    
+}
+
+- (CMTimeRange)pictureInPictureControllerTimeRangeForPlayback:(AVPictureInPictureController *)pictureInPictureController NS_SWIFT_NAME(pictureInPictureControllerTimeRangeForPlayback(_:)) {
+    return CMTimeRangeMake(kCMTimeZero, kCMTimePositiveInfinity);
+}
+- (BOOL)pictureInPictureControllerIsPlaybackPaused:(AVPictureInPictureController *)pictureInPictureController NS_SWIFT_NAME(pictureInPictureControllerIsPlaybackPaused(_:)) {
+    return NO;
+}
+
+- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController didTransitionToRenderSize:(CMVideoDimensions)newRenderSize NS_SWIFT_NAME(pictureInPictureController(_:didTransitionToRenderSize:)) {
+    
+}
+
+
+- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController skipByInterval:(CMTime)skipInterval completionHandler:(void (^)(void))completionHandler NS_SWIFT_NAME(pictureInPictureController(_:skipByInterval:completion:)) {
+    
+}
+
+// pip end
+
+
 @end

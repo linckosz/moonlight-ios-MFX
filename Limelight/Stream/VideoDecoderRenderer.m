@@ -39,6 +39,8 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     float _metalFxMultiplier;
     
     VTDecompressionSessionRef decompressionSession;
+    
+    AVPictureInPictureController* pipController;
 }
 
 - (void)reinitializeDisplayLayer
@@ -47,7 +49,6 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
         CFRelease(formatDesc);
         formatDesc = nil;
     }
-
     [self initializeVTDecompressSession:false];
     CGSize videoSize;
     CGFloat width = _view.bounds.size.width;
@@ -84,11 +85,33 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
         else {
             [_view.layer addSublayer:displayLayer];
         }
+        if (AVPictureInPictureController.isPictureInPictureSupported) {
+            if (@available(iOS 15.0, *)) {
+                pipController = [ [AVPictureInPictureController alloc] initWithContentSource:[[AVPictureInPictureControllerContentSource alloc] initWithSampleBufferDisplayLayer:displayLayer playbackDelegate:_view]];
+                pipController.delegate = _view;
+                pipController.canStartPictureInPictureAutomaticallyFromInline = YES;
+            }
+        }
     } else {
         _view.layer.bounds  = CGRectMake(0, 0, videoSize.width, videoSize.height);
     }
     
 }
+-(void) enablePiP {
+    if (pipController != nil) {
+        if ([pipController isPictureInPicturePossible] && ![pipController isPictureInPictureActive]) {
+            [pipController startPictureInPicture];
+        }
+    }
+}
+-(void) stopPiP {
+    if (pipController != nil) {
+        if ([pipController isPictureInPictureActive]) {
+            [pipController stopPictureInPicture];
+        }
+    }
+}
+
 
 - (void) initializeVTDecompressSession:(Boolean)init {
     if (decompressionSession != NULL){

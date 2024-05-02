@@ -65,6 +65,13 @@ void DrStop(void)
     [renderer stop];
 }
 
+-(void) enablePiP {
+    [renderer enablePiP];
+}
+-(void) stopPiP {
+    [renderer stopPiP];
+}
+
 -(BOOL) getVideoStats:(video_stats_t*)stats
 {
     // We return lastVideoStats because it is a complete 1 second window
