@@ -11,6 +11,7 @@ Changes:
 * Host PC multi-monitor switching. (Up to 3 monitors)
 * Apple-pencil support now only available on new Multi-touch passthrough mode.
 * MetalFx spatial upscaling support. (Prototype)
+* PiP support. (Prototype)
 * Multiple gesture changes & New gestures:
   * Two-finger swipes up to open up the keyboard.
   * Two-finger swipes down to close the keyboard.
@@ -25,12 +26,14 @@ Changes:
 任何新的想法都是欢迎的，最好的办法是打开一个issue讨论它，然后它可能被实现。
 ---
 修改：
+* 国际化支持
 * 禁用了串流自动降低其他正在播放的音频。
 * 重新实现了一个全新的多触点透传（Sunshine 0.21.0+）功能。（最多10个手指）
 * 移动了旧的触控功能到legacy模式。
 * 主机PC多屏幕切换。最多3个屏幕
 * Apple-pencil支持现在只可用在新多触点透传模式下。
 * MetalFx 升采样支持(原型)
+* 画中画支持(原型)
 * 修改了多触点功能，新增了以下手势：
   * 两指向上滑动打开键盘。
   * 两指向下滑动关闭键盘。

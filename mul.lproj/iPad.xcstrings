@@ -67,6 +67,42 @@
         }
       }
     },
+    "9yM-MR-eHH.segmentTitles[0]" : {
+      "comment" : "Class = \"UISegmentedControl\"; 9yM-MR-eHH.segmentTitles[0] = \"Enabled\"; ObjectID = \"9yM-MR-eHH\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Enabled"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用"
+          }
+        }
+      }
+    },
+    "9yM-MR-eHH.segmentTitles[1]" : {
+      "comment" : "Class = \"UISegmentedControl\"; 9yM-MR-eHH.segmentTitles[1] = \"Disabled\"; ObjectID = \"9yM-MR-eHH\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Disabled"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "禁用"
+          }
+        }
+      }
+    },
     "aFy-0w-YPe.segmentTitles[0]" : {
       "comment" : "Class = \"UISegmentedControl\"; aFy-0w-YPe.segmentTitles[0] = \"H.264\"; ObjectID = \"aFy-0w-YPe\";",
       "extractionState" : "extracted_with_value",
@@ -166,6 +202,12 @@
             "state" : "new",
             "value" : "Off"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭"
+          }
         }
       }
     },
@@ -181,7 +223,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "1.1倍"
           }
         }
@@ -411,6 +453,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "触屏"
+          }
+        }
+      }
+    },
+    "eD9-k5-zgc.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Gestures\"; ObjectID = \"eD9-k5-zgc\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Gestures"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷手势"
           }
         }
       }

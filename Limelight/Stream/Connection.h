@@ -27,6 +27,8 @@ typedef struct {
 
 -(id) initWithConfig:(StreamConfiguration*)config renderer:(VideoDecoderRenderer*)myRenderer connectionCallbacks:(id<ConnectionCallbacks>)callbacks;
 -(void) terminate;
+-(void) enablePiP;
+-(void) stopPiP;
 -(void) main;
 -(BOOL) getVideoStats:(video_stats_t*)stats;
 -(NSString*) getActiveCodecName;

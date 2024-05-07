@@ -124,7 +124,7 @@ static NSMutableSet* hostList;
 
 - (void)enableUpButton {
 #if !TARGET_OS_TV
-    [self->_upButton setTitle:@"Select New Host"];
+    [self->_upButton setTitle:NSLocalizedString(@"Select New Host", "")];
 #endif
 }
 
@@ -133,10 +133,10 @@ static NSMutableSet* hostList;
         self.title = _selectedHost.name;
     }
     else if ([hostList count] == 0) {
-        self.title = @"Searching for PCs on your network...";
+        self.title = NSLocalizedString(@"Searching for PCs on your network...", "");
     }
     else {
-        self.title = @"Select Host";
+        self.title = NSLocalizedString(@"Select Host", "");
     }
 }
 
@@ -473,35 +473,35 @@ static NSMutableSet* hostList;
     
     UIAlertController* longClickAlert = [UIAlertController alertControllerWithTitle:host.name message:message preferredStyle:UIAlertControllerStyleActionSheet];
     if (host.state != StateOnline) {
-        [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Wake PC" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
-            UIAlertController* wolAlert = [UIAlertController alertControllerWithTitle:@"Wake-On-LAN" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-            [wolAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [longClickAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Wake PC", "") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
+            UIAlertController* wolAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Wake-On-LAN", "") message:@"" preferredStyle:UIAlertControllerStyleAlert];
+            [wolAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", "") style:UIAlertActionStyleDefault handler:nil]];
             if (host.mac == nil || [host.mac isEqualToString:@"00:00:00:00:00:00"]) {
-                wolAlert.message = @"Host MAC unknown, unable to send WOL Packet";
+                wolAlert.message = NSLocalizedString(@"Host MAC unknown, unable to send WOL Packet", "");
             } else {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     [WakeOnLanManager wakeHost:host];
                 });
-                wolAlert.message = @"Successfully sent wake-up request. It may take a few moments for the PC to wake. If it never wakes up, ensure it's properly configured for Wake-on-LAN.";
+                wolAlert.message = NSLocalizedString(@"Successfully sent wake-up request. It may take a few moments for the PC to wake. If it never wakes up, ensure it's properly configured for Wake-on-LAN.", "");
             }
             [[self activeViewController] presentViewController:wolAlert animated:YES completion:nil];
         }]];
     }
     else if (host.pairState == PairStatePaired) {
-        [longClickAlert addAction:[UIAlertAction actionWithTitle:@"View All Apps" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
+        [longClickAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"View All Apps", "") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
             self->_showHiddenApps = YES;
             [self hostClicked:host view:view];
         }]];
         
 #if !TARGET_OS_TV
         if (host.isNvidiaServerSoftware) {
-            [longClickAlert addAction:[UIAlertAction actionWithTitle:@"NVIDIA GameStream End-of-Service" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
+            [longClickAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NVIDIA GameStream End-of-Service", "") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
                 [Utils launchUrl:@"https://github.com/moonlight-stream/moonlight-docs/wiki/NVIDIA-GameStream-End-Of-Service-Announcement-FAQ"];
             }]];
         }
 #endif
     }
-    [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Test Network" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {
+    [longClickAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Test Network", "") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {
         [self showLoadingFrame:^{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 // Perform the network test on a GCD worker thread. It may take a while.
@@ -511,19 +511,19 @@ static NSMutableSet* hostList;
                         NSString* message;
                         
                         if (portTestResult == 0) {
-                            message = @"This network does not appear to be blocking Moonlight. If you still have trouble connecting, check your PC's firewall settings.\n\nVisit the Moonlight Setup Guide on GitHub for additional setup help and troubleshooting steps.";
+                            message = NSLocalizedString(@"This network does not appear to be blocking Moonlight. If you still have trouble connecting, check your PC's firewall settings.\n\nVisit the Moonlight Setup Guide on GitHub for additional setup help and troubleshooting steps.", "");
                         }
                         else if (portTestResult == ML_TEST_RESULT_INCONCLUSIVE) {
-                            message = @"The network test could not be performed because none of Moonlight's connection testing servers were reachable. Check your Internet connection or try again later.";
+                            message = NSLocalizedString(@"The network test could not be performed because none of Moonlight's connection testing servers were reachable. Check your Internet connection or try again later.", "");
                         }
                         else {
                             char blockedPorts[512];
                             LiStringifyPortFlags(portTestResult, "\n", blockedPorts, sizeof(blockedPorts));
-                            message = [NSString stringWithFormat:@"Your current network connection seems to be blocking Moonlight. Streaming may not work while connected to this network.\n\nThe following network ports were blocked:\n%s", blockedPorts];
+                            message = [NSString stringWithFormat:NSLocalizedString(@"Your current network connection seems to be blocking Moonlight. Streaming may not work while connected to this network.\n\nThe following network ports were blocked:\n%s", ""), blockedPorts];
                         }
                         
-                        UIAlertController* netTestAlert = [UIAlertController alertControllerWithTitle:@"Network Test Complete" message:message preferredStyle:UIAlertControllerStyleAlert];
-                        [netTestAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                        UIAlertController* netTestAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Network Test Complete", "") message:message preferredStyle:UIAlertControllerStyleAlert];
+                        [netTestAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", "") style:UIAlertActionStyleDefault handler:nil]];
                         [[self activeViewController] presentViewController:netTestAlert animated:YES completion:nil];
                     }];
                 });
@@ -532,15 +532,15 @@ static NSMutableSet* hostList;
     }]];
 #if !TARGET_OS_TV
     if (host.state != StateOnline) {
-        [longClickAlert addAction:[UIAlertAction actionWithTitle:@"NVIDIA GameStream End-of-Service" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
+        [longClickAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NVIDIA GameStream End-of-Service", "") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
             [Utils launchUrl:@"https://github.com/moonlight-stream/moonlight-docs/wiki/NVIDIA-GameStream-End-Of-Service-Announcement-FAQ"];
         }]];
-        [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Connection Help" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
+        [longClickAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Connection Help", "") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
             [Utils launchUrl:@"https://github.com/moonlight-stream/moonlight-docs/wiki/Troubleshooting"];
         }]];
     }
 #endif
-    [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Remove Host" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action) {
+    [longClickAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Remove Host", "") style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action) {
         [self->_discMan removeHostFromDiscovery:host];
         DataManager* dataMan = [[DataManager alloc] init];
         [dataMan removeHost:host];
@@ -550,7 +550,7 @@ static NSMutableSet* hostList;
         }
         
     }]];
-    [longClickAlert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [longClickAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") style:UIAlertActionStyleCancel handler:nil]];
     
     // these two lines are required for iPad support of UIAlertSheet
     longClickAlert.popoverPresentationController.sourceView = view;
@@ -561,9 +561,9 @@ static NSMutableSet* hostList;
 
 - (void) addHostClicked {
     Log(LOG_D, @"Clicked add host");
-    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Add Host Manually" message:@"If Moonlight doesn't find your local gaming PC automatically,\nenter the IP address of your PC" preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
+    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Add Host Manually", "") message:NSLocalizedString(@"If Moonlight doesn't find your local gaming PC automatically,\nenter the IP address of your PC", "") preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", "") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
         NSString* hostAddress = [((UITextField*)[[alertController textFields] objectAtIndex:0]).text trim];
         [self showLoadingFrame:^{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -581,12 +581,12 @@ static NSMutableSet* hostList;
                         unsigned int portTestResults = LiTestClientConnectivity(CONN_TEST_SERVER, 443,
                                                                                 ML_PORT_FLAG_TCP_47984 | ML_PORT_FLAG_TCP_47989);
                         if (portTestResults != ML_TEST_RESULT_INCONCLUSIVE && portTestResults != 0) {
-                            error = [error stringByAppendingString:@"\n\nYour device's network connection is blocking Moonlight. Streaming may not work while connected to this network."];
+                            error = [error stringByAppendingString:NSLocalizedString(@"\n\nYour device's network connection is blocking Moonlight. Streaming may not work while connected to this network.", "")];
                         }
                         
-                        UIAlertController* hostNotFoundAlert = [UIAlertController alertControllerWithTitle:@"Add Host Manually" message:error preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertController* hostNotFoundAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Add Host Manually", "") message:error preferredStyle:UIAlertControllerStyleAlert];
                         [Utils addHelpOptionToDialog:hostNotFoundAlert];
-                        [hostNotFoundAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                        [hostNotFoundAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", "") style:UIAlertActionStyleDefault handler:nil]];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self hideLoadingFrame:^{
                                 [[self activeViewController] presentViewController:hostNotFoundAlert animated:YES completion:nil];
@@ -754,7 +754,7 @@ static NSMutableSet* hostList;
                                           preferredStyle:UIAlertControllerStyleActionSheet];
     
     [alertController addAction:[UIAlertAction
-                                actionWithTitle:currentApp == nil ? @"Launch App" : ([app.id isEqualToString:currentApp.id] ? @"Resume App" : @"Resume Running App") style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
+                                actionWithTitle:currentApp == nil ? NSLocalizedString(@"Launch App", "") : ([app.id isEqualToString:currentApp.id] ? NSLocalizedString(@"Resume App", "") : NSLocalizedString(@"Resume Running App", "")) style:UIAlertActionStyleDefault handler:^(UIAlertAction* action){
         if (currentApp != nil) {
             Log(LOG_I, @"Resuming application: %@", currentApp.name);
             [self prepareToStreamApp:currentApp];
@@ -769,7 +769,7 @@ static NSMutableSet* hostList;
     
     if (currentApp != nil) {
         [alertController addAction:[UIAlertAction actionWithTitle:
-                                    [app.id isEqualToString:currentApp.id] ? @"Quit App" : @"Quit Running App and Start" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action){
+                                    [app.id isEqualToString:currentApp.id] ? NSLocalizedString(@"Quit App", "") : NSLocalizedString(@"Quit Running App and Start", "") style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action){
                                         Log(LOG_I, @"Quitting application: %@", currentApp.name);
                                         [self showLoadingFrame: ^{
                                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -799,11 +799,11 @@ static NSMutableSet* hostList;
 
                                                 // If it fails, display an error and stop the current operation
                                                 if (quitResponse.statusCode != 200) {
-                                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Quitting App Failed"
-                                                                                                message:@"Failed to quit app. If this app was started by "
-                                                             "another device, you'll need to quit from that device."
+                                                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Quitting App Failed", "")
+                                                                                                message:NSLocalizedString(@"Failed to quit app. If this app was started by "
+                                                                                                                          "another device, you'll need to quit from that device.", "")
                                                                                          preferredStyle:UIAlertControllerStyleAlert];
-                                                    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                                                    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", "") style:UIAlertActionStyleDefault handler:nil]];
                                                     dispatch_async(dispatch_get_main_queue(), ^{
                                                         [self updateAppsForHost:app.host];
                                                         [self hideLoadingFrame: ^{
@@ -834,7 +834,7 @@ static NSMutableSet* hostList;
     }
 
     if (currentApp == nil || ![app.id isEqualToString:currentApp.id] || app.hidden) {
-        [alertController addAction:[UIAlertAction actionWithTitle:app.hidden ? @"Show App" : @"Hide App"
+        [alertController addAction:[UIAlertAction actionWithTitle:app.hidden ? NSLocalizedString(@"Show App", "") : NSLocalizedString(@"Hide App", "")
                                                             style:app.hidden ? UIAlertActionStyleDefault : UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction* action) {
             app.hidden = !app.hidden;
@@ -845,7 +845,7 @@ static NSMutableSet* hostList;
         }]];
     }
     
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") style:UIAlertActionStyleCancel handler:nil]];
 
     // these two lines are required for iPad support of UIAlertSheet
     alertController.popoverPresentationController.sourceView = view;

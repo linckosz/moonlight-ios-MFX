@@ -69,7 +69,8 @@
                absoluteTouchMode:(BOOL)absoluteTouchMode
                     statsOverlay:(BOOL)statsOverlay
                 touchPassthrough:(BOOL)touchPassthrough
-               metalFxMultiplier:(NSInteger)metalFxMultiplier {
+               metalFxMultiplier:(NSInteger)metalFxMultiplier
+                gesturesDisabled:(BOOL)gesturesDisabled {
     
     [_managedObjectContext performBlockAndWait:^{
         Settings* settingsToSave = [self retrieveSettings];
@@ -91,6 +92,7 @@
         settingsToSave.statsOverlay = statsOverlay;
         settingsToSave.touchPassthrough = touchPassthrough;
         settingsToSave.metalFxMultiplier = [NSNumber numberWithInteger:metalFxMultiplier];
+        settingsToSave.disableGestures = gesturesDisabled;
         
         
         [self saveData];

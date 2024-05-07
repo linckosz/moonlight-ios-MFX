@@ -135,32 +135,34 @@
     [self.view addGestureRecognizer:_playPauseTapGestureRecognizer];
 
 #else
-    _exitSwipeRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgeSwiped)];
-    _exitSwipeRecognizer.edges = UIRectEdgeLeft;
-    _exitSwipeRecognizer.delaysTouchesBegan = NO;
-    _exitSwipeRecognizer.delaysTouchesEnded = NO;
-    
-    [self.view addGestureRecognizer:_exitSwipeRecognizer];
-    
-    _openKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openKeyboard)];
-    _openKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
-    _openKeyboardRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:_openKeyboardRecognizer];
-    
-    _closeKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
-    _closeKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
-    _closeKeyboardRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:_closeKeyboardRecognizer];
-    
-    _previousMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousMonitor)];
-    _previousMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-    _previousMonitorRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:_previousMonitorRecognizer];
-    
-    _nextMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextMonitor)];
-    _nextMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-    _nextMonitorRecognizer.numberOfTouchesRequired = 2;
-    [self.view addGestureRecognizer:_nextMonitorRecognizer];
+    if (!_settings.disableGestures) {
+        _exitSwipeRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgeSwiped)];
+        _exitSwipeRecognizer.edges = UIRectEdgeLeft;
+        _exitSwipeRecognizer.delaysTouchesBegan = NO;
+        _exitSwipeRecognizer.delaysTouchesEnded = NO;
+        
+        [self.view addGestureRecognizer:_exitSwipeRecognizer];
+        
+        _openKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openKeyboard)];
+        _openKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+        _openKeyboardRecognizer.numberOfTouchesRequired = 2;
+        [self.view addGestureRecognizer:_openKeyboardRecognizer];
+        
+        _closeKeyboardRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+        _closeKeyboardRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+        _closeKeyboardRecognizer.numberOfTouchesRequired = 2;
+        [self.view addGestureRecognizer:_closeKeyboardRecognizer];
+        
+        _previousMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousMonitor)];
+        _previousMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        _previousMonitorRecognizer.numberOfTouchesRequired = 2;
+        [self.view addGestureRecognizer:_previousMonitorRecognizer];
+        
+        _nextMonitorRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextMonitor)];
+        _nextMonitorRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        _nextMonitorRecognizer.numberOfTouchesRequired = 2;
+        [self.view addGestureRecognizer:_nextMonitorRecognizer];
+    }
 #endif
     
     _tipLabel = [[UILabel alloc] init];
@@ -212,19 +214,21 @@
                                                object: nil];
 #endif
     
-    _streamView.device = MTLCreateSystemDefaultDevice();
-    _streamView.backgroundColor = UIColor.blackColor;
-    if(!_streamView.device) {
-        NSLog(@"Metal is not supported on this device");
-        self.view = [[UIView alloc] initWithFrame:self.view.frame];
-        return;
-    }
-    
-    if (@available(iOS 16.0, *)) {
-        _renderer = [[StreamViewRenderer alloc] initWithMetalKitView:_streamView];
-        [_renderer mtkView:_streamView drawableSizeWillChange:_streamView.drawableSize];
+    if ([_settings.metalFxMultiplier unsignedIntValue] > 1) {
+        _streamView.device = MTLCreateSystemDefaultDevice();
+        _streamView.backgroundColor = UIColor.blackColor;
+        if(!_streamView.device) {
+            NSLog(@"Metal is not supported on this device");
+            self.view = [[UIView alloc] initWithFrame:self.view.frame];
+            return;
+        }
+        
+        if (@available(iOS 16.0, *)) {
+            _renderer = [[StreamViewRenderer alloc] initWithMetalKitView:_streamView];
+            [_renderer mtkView:_streamView drawableSizeWillChange:_streamView.drawableSize];
 
-        _streamView.delegate = _renderer;
+            _streamView.delegate = _renderer;
+        }
     }
 
     // Only enable scroll and zoom in absolute touch mode
@@ -346,10 +350,15 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    Log(LOG_I, @"Starting inactivity termination timer");
+}
 - (void) returnToMainFrame {
     // Reset display mode back to default
     [self updatePreferredDisplayMode:NO];
+    [self->_streamView invalidateIntrinsicContentSize];
     [self->_streamView releaseDrawables];
+    self->_streamView = nil;
     [_statsUpdateTimer invalidate];
     _statsUpdateTimer = nil;
     
@@ -388,6 +397,7 @@
         [_inactivityTimer invalidate];
         _inactivityTimer = nil;
     }
+    [_streamMan stopPiP];
 }
 
 // This fires when the home button is pressed
@@ -398,8 +408,7 @@
         [_inactivityTimer invalidate];
         _inactivityTimer = nil;
     }
-    
-    [self returnToMainFrame];
+
 }
 
 - (void)edgeSwiped {

@@ -1,0 +1,435 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "\n\nYour device's network connection is blocking Moonlight. Streaming may not work while connected to this network." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的设备正在阻止Moonlight进行连接。在该网络上串流有可能无法正常工作。"
+          }
+        }
+      }
+    },
+    "AButton" : {
+
+    },
+    "Add Host Manually" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "手动添加主机"
+          }
+        }
+      }
+    },
+    "Average network latency: %u ms (variance: %u ms)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Average network latency: %1$u ms (variance: %2$u ms)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "平均网络延迟: %1$u ms (抖动: %2$u ms)"
+          }
+        }
+      }
+    },
+    "BButton" : {
+
+    },
+    "Bitrate: %.1f Mbps" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "码率: %.1f Mbps"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        }
+      }
+    },
+    "Connection Help" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网络连接帮助"
+          }
+        }
+      }
+    },
+    "DownButton" : {
+
+    },
+    "Failed to quit app. If this app was started by another device, you'll need to quit from that device." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法退出程序。如果这个程序是从其他地方打开的你需要从其他地方退出。"
+          }
+        }
+      }
+    },
+    "Frames dropped by your network connection: %.2f" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网络丢帧率: %.2f"
+          }
+        }
+      }
+    },
+    "Hide App" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隐藏程序"
+          }
+        }
+      }
+    },
+    "Host MAC unknown, unable to send WOL Packet" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主机的MAC地址未知，无法发送WOL请求。"
+          }
+        }
+      }
+    },
+    "Host processing latency min/max/avg: %.1f/%.1f/%.1f ms" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Host processing latency min/max/avg: %1$.1f/%2$.1f/%3$.1f ms"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主机处理延迟 最低/最高/平均: %1$.1f/%2$.1f/%3$.1f ms"
+          }
+        }
+      }
+    },
+    "If Moonlight doesn't find your local gaming PC automatically,\nenter the IP address of your PC" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如果Moonlight无法自动找到局域网上的主机，请手动输入目标主机的IP地址。"
+          }
+        }
+      }
+    },
+    "L1" : {
+
+    },
+    "L2" : {
+
+    },
+    "L3" : {
+
+    },
+    "Launch App" : {
+
+    },
+    "LeftButton" : {
+
+    },
+    "Network Test Complete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网络测试已完成"
+          }
+        }
+      }
+    },
+    "NVIDIA GameStream End-of-Service" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NVIDIA Shield串流终止服务"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定"
+          }
+        }
+      }
+    },
+    "Quit App" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "退出程序"
+          }
+        }
+      }
+    },
+    "Quit Running App and Start" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "退出程序重新并打开"
+          }
+        }
+      }
+    },
+    "Quitting App Failed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "退出程序失败"
+          }
+        }
+      }
+    },
+    "R1" : {
+
+    },
+    "R2" : {
+
+    },
+    "R3" : {
+
+    },
+    "Remove Host" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除主机"
+          }
+        }
+      }
+    },
+    "Resume App" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恢复程序"
+          }
+        }
+      }
+    },
+    "Resume Running App" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恢复运行中的程序"
+          }
+        }
+      }
+    },
+    "RightButton" : {
+
+    },
+    "Searching for PCs on your network..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在你的网络上搜索主机..."
+          }
+        }
+      }
+    },
+    "Select Host" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择主机"
+          }
+        }
+      }
+    },
+    "Select New Host" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择一个新主机"
+          }
+        }
+      }
+    },
+    "SelectButton" : {
+
+    },
+    "Set PC/Game resolution:" : {
+      "comment" : "target resolution label",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置 主机/游戏 分辨率到:"
+          }
+        }
+      }
+    },
+    "Show App" : {
+
+    },
+    "StartButton" : {
+
+    },
+    "StickInner" : {
+
+    },
+    "StickOuter" : {
+
+    },
+    "Successfully sent wake-up request. It may take a few moments for the PC to wake. If it never wakes up, ensure it's properly configured for Wake-on-LAN." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "成功发送局域网唤醒请求。这可能需要一些时间让电脑启动。如果电脑并未正常启动，检查电脑是否已启用WOL功能。"
+          }
+        }
+      }
+    },
+    "Target stream: %dx%d" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Target stream: %1$dx%2$d"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目标分辨率: %1$dx%2$d"
+          }
+        }
+      }
+    },
+    "Test Network" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "测试网络连接"
+          }
+        }
+      }
+    },
+    "The network test could not be performed because none of Moonlight's connection testing servers were reachable. Check your Internet connection or try again later." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网络连接测试因为没有可用的测试服务器而无法进行。检查你的网络连接后再试一次。"
+          }
+        }
+      }
+    },
+    "This network does not appear to be blocking Moonlight. If you still have trouble connecting, check your PC's firewall settings.\n\nVisit the Moonlight Setup Guide on GitHub for additional setup help and troubleshooting steps." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当前网络似乎并没有阻止Moonlight。如果你仍然无法正常连接，请检查电脑的防火墙设置。"
+          }
+        }
+      }
+    },
+    "UpButton" : {
+
+    },
+    "Video stream: %dx%d %.2f FPS (Codec: %@)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "视频分辨率: %1$dx%2$d %3$.2f FPS (编码器: %4$@)"
+          }
+        }
+      }
+    },
+    "View All Apps" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看所有App"
+          }
+        }
+      }
+    },
+    "Wake PC" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "唤醒电脑"
+          }
+        }
+      }
+    },
+    "Wake-On-LAN" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "局域网唤醒"
+          }
+        }
+      }
+    },
+    "XButton" : {
+
+    },
+    "YButton" : {
+
+    },
+    "Your current network connection seems to be blocking Moonlight. Streaming may not work while connected to this network.\n\nThe following network ports were blocked:\n%s" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你当前的网络似乎正在阻止Moonlight。Moonlight在当前网络有可能无法正常工作。以下是可能被阻止的端口: %s"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -106,6 +106,14 @@
     });
 }
 
+-(void) enablePiP {
+    [_connection enablePiP];
+}
+
+-(void) stopPiP {
+    [_connection stopPiP];
+}
+
 - (void) stopStream
 {
     [_connection terminate];
@@ -160,16 +168,17 @@
     
     uint32_t rtt, variance;
     NSString* latencyString;
+    //nAverage network latency:
     if (LiGetEstimatedRttInfo(&rtt, &variance)) {
-        latencyString = [NSString stringWithFormat:@"%u ms (variance: %u ms)", rtt, variance];
+        latencyString = [NSString stringWithFormat:NSLocalizedString(@"Average network latency: %u ms (variance: %u ms)", ""), rtt, variance];
     }
     else {
-        latencyString = @"N/A";
+        latencyString = @"Average network latency: N/A";
     }
     
     NSString* hostProcessingString;
     if (stats.framesWithHostProcessingLatency != 0) {
-        hostProcessingString = [NSString stringWithFormat:@"\nHost processing latency min/max/avg: %.1f/%.1f/%.1f ms",
+        hostProcessingString = [NSString stringWithFormat:NSLocalizedString(@"Host processing latency min/max/avg: %.1f/%.1f/%.1f ms", ""),
                                 stats.minHostProcessingLatency / 10.f,
                                 stats.maxHostProcessingLatency / 10.f,
                                 (float)stats.totalHostProcessingLatency / stats.framesWithHostProcessingLatency / 10.f];
@@ -179,16 +188,18 @@
     }
     
     float interval = stats.endTime - stats.startTime;
-    return [NSString stringWithFormat:@"Video stream: %dx%d %.2f FPS (Codec: %@)\nFrames dropped by your network connection: %.2f%%\nAverage network latency: %@%@\nTarget stream: %dx%d",
-            _config.width,
-            _config.height,
-            stats.totalFrames / interval,
-            [_connection getActiveCodecName],
-            stats.networkDroppedFrames / interval,
+    return [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n",
+            [NSString stringWithFormat:NSLocalizedString(@"Video stream: %dx%d %.2f FPS (Codec: %@)", ""),
+             _config.width,
+             _config.height,
+             stats.totalFrames / interval,
+             [_connection getActiveCodecName]],
+            [NSString stringWithFormat:NSLocalizedString(@"Frames dropped by your network connection: %.2f", ""), stats.networkDroppedFrames / interval],
             latencyString,
             hostProcessingString,
-            (int)MAX(_config.width * _config.metalFxMultiplier, _config.width),
-            (int)MAX(_config.height * _config.metalFxMultiplier, _config.height)];
+            [NSString stringWithFormat:NSLocalizedString(@"Target stream: %dx%d", ""), (int)MAX(_config.width * _config.metalFxMultiplier, _config.width),
+             (int)MAX(_config.height * _config.metalFxMultiplier, _config.height)]
+            ];
 }
 
 @end

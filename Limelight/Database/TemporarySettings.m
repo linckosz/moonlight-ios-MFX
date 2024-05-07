@@ -87,6 +87,7 @@
     self.statsOverlay = settings.statsOverlay;
     self.touchPassthrough = settings.touchPassthrough;
     self.metalFxMultiplier = settings.metalFxMultiplier;
+    self.disableGestures = settings.disableGestures;
 #endif
     self.uniqueId = settings.uniqueId;
     

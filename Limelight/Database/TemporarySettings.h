@@ -36,6 +36,7 @@
 @property (nonatomic) BOOL absoluteTouchMode;
 @property (nonatomic) BOOL touchPassthrough;
 @property (nonatomic) BOOL statsOverlay;
+@property (nonatomic) BOOL disableGestures;
 
 - (id) initFromSettings:(Settings*)settings;
 

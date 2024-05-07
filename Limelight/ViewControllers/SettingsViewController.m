@@ -20,7 +20,6 @@
 
 @dynamic overrideUserInterfaceStyle;
 
-static NSString* bitrateFormat = @"Bitrate: %.1f Mbps";
 static const int bitrateTable[] = {
     500,
     1000,
@@ -269,6 +268,7 @@ BOOL isCustomResolution(CGSize res) {
     [self.bitrateSlider setMaximumValue:(sizeof(bitrateTable) / sizeof(*bitrateTable)) - 1];
     [self.bitrateSlider setValue:[self getSliderValueForBitrate:_bitrate] animated:YES];
     [self.bitrateSlider addTarget:self action:@selector(bitrateSliderMoved) forControlEvents:UIControlEventValueChanged];
+    [self.gesturesSelector setSelectedSegmentIndex:currentSettings.disableGestures ? 1 : 0];
     [self updateBitrateText];
     [self updateResolutionDisplayViewText];
 }
@@ -459,7 +459,7 @@ BOOL isCustomResolution(CGSize res) {
         [subview removeFromSuperview];
     }
     UILabel *label1 = [[UILabel alloc] init];
-    label1.text = @"Set PC/Game resolution: ";
+    label1.text = NSLocalizedString(@"Set PC/Game resolution:", "target resolution label");
     label1.font = [UIFont systemFontOfSize:fontSize];
     [label1 sizeToFit];
     label1.frame = CGRectMake(padding, (viewFrameHeight - label1.frame.size.height) / 2, label1.frame.size.width, label1.frame.size.height);
@@ -481,7 +481,7 @@ BOOL isCustomResolution(CGSize res) {
 
 - (void) updateBitrateText {
     // Display bitrate in Mbps
-    [self.bitrateLabel setText:[NSString stringWithFormat:bitrateFormat, _bitrate / 1000.]];
+    [self.bitrateLabel setText:[NSString stringWithFormat:NSLocalizedString(@"Bitrate: %.1f Mbps", ""), _bitrate / 1000.]];
 }
 
 - (NSInteger) getChosenFrameRate {
@@ -557,6 +557,7 @@ BOOL isCustomResolution(CGSize res) {
     BOOL touchPassthrough = [self.touchModeSelector selectedSegmentIndex] == 2;
     BOOL statsOverlay = [self.statsOverlaySelector selectedSegmentIndex] == 1;
     BOOL enableHdr = [self.hdrSelector selectedSegmentIndex] == 1;
+    BOOL gesturesDisabled = [self.gesturesSelector selectedSegmentIndex] == 1;
     [dataMan saveSettingsWithBitrate:_bitrate
                            framerate:framerate
                               height:height
@@ -574,7 +575,8 @@ BOOL isCustomResolution(CGSize res) {
                    absoluteTouchMode:absoluteTouchMode
                         statsOverlay:statsOverlay
                     touchPassthrough:touchPassthrough
-                    metalFxMultiplier:metalFxMultiplier];
+                    metalFxMultiplier:metalFxMultiplier
+                    gesturesDisabled:gesturesDisabled];
 }
 
 - (void)didReceiveMemoryWarning {

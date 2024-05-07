@@ -5,7 +5,7 @@
 //  Created by Cameron Gutman on 10/19/14.
 //  Copyright (c) 2014 Moonlight Stream. All rights reserved.
 //
-
+@import AVKit;
 #import "ControllerSupport.h"
 #import "OnScreenControls.h"
 #import "Moonlight-Swift.h"
@@ -24,7 +24,8 @@
 #if TARGET_OS_TV
 @interface StreamView : UIView <X1KitMouseDelegate, UITextFieldDelegate>
 #else
-@interface StreamView : MTKView  <X1KitMouseDelegate, UITextFieldDelegate, UIPointerInteractionDelegate>
+@interface StreamView : MTKView  <X1KitMouseDelegate, UITextFieldDelegate,
+AVPictureInPictureControllerDelegate,UIPointerInteractionDelegate,AVPictureInPictureSampleBufferPlaybackDelegate>
 #endif
 
 - (void) setupStreamView:(ControllerSupport*)controllerSupport
