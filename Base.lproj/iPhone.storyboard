@@ -366,7 +366,7 @@
                                     <segment title="Off"/>
                                     <segment title="1.1x"/>
                                     <segment title="1.3x"/>
-                                    <segment title="1.5x"/>
+                                    <segment title="Screen"/>
                                 </segments>
                                 <color key="tintColor" red="0.6716768742" green="0.61711704730000005" blue="0.99902987480000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="selectedSegmentTintColor" red="0.6716768742" green="0.61711704730000005" blue="0.99902987480000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

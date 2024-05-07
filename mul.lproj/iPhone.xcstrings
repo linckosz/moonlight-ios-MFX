@@ -998,19 +998,19 @@
       }
     },
     "zRw-Xa-zhh.segmentTitles[3]" : {
-      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[3] = \"1.5x\"; ObjectID = \"zRw-Xa-zhh\";",
+      "comment" : "Class = \"UISegmentedControl\"; zRw-Xa-zhh.segmentTitles[3] = \"Screen\"; ObjectID = \"zRw-Xa-zhh\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "1.5x"
+            "value" : "Screen"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "1.5倍"
+            "state" : "needs_review",
+            "value" : "Screen"
           }
         }
       }

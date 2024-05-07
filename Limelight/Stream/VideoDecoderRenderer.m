@@ -144,6 +144,7 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
 
 - (id)initWithView:(StreamView*)view callbacks:(id<ConnectionCallbacks>)callbacks streamAspectRatio:(float)aspectRatio useFramePacing:(BOOL)useFramePacing
  metalFxMultiplier:(float)metalFxMultiplier
+      configHeight:(float)configHeight
 {
     self = [super init];
     
@@ -151,6 +152,19 @@ extern int ff_isom_write_av1c(AVIOContext *pb, const uint8_t *buf, int size,
     _callbacks = callbacks;
     _streamAspectRatio = aspectRatio;
     framePacing = useFramePacing;
+    
+    // We get the screen high to calculate the multiplier
+    UIScreen *screen = [UIScreen mainScreen];
+    CGRect screenBounds = screen.bounds;
+    CGFloat scaleFactor = screen.scale;
+    CGFloat screenHeightInPixels = screenBounds.size.height * scaleFactor;
+    
+    if(metalFxMultiplier == 1.5f){
+        // The multiplier will be set to fit precisely the screen size
+        // Note: we use height as reference as iPhones have width wider than 16:9 used by Moonlight
+        metalFxMultiplier = screenHeightInPixels / configHeight;
+    }
+    
     _metalFxMultiplier = metalFxMultiplier;
     
     parameterSetBuffers = [[NSMutableArray alloc] init];

@@ -25,7 +25,7 @@
     // The command queue used to pass commands to the device.
     id<MTLCommandQueue> _commandQueue;
 
-    CVMetalTextureCacheRef textureCache;
+    CVMetalTextureCacheRef _textureCache;
     id <MTLTexture> _lumaTexture;
     id <MTLTexture> _lumaUpscaledTexture;
     id <MTLTexture> _chromaTexture;
@@ -40,6 +40,7 @@
     
     float _resolutionMultiplier;
     BOOL _metalFxEnabled;
+    CVMetalTextureRef _cvTexture;
 }
 
 -(nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)view;
@@ -101,8 +102,8 @@
         return nil;
     }
     
-    if (textureCache == nil) {
-        CVMetalTextureCacheCreate(kCFAllocatorDefault, nil,_device,nil,&textureCache);
+    if (_textureCache == nil) {
+        CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, _device, nil, &_textureCache);
     }
     size_t width  = CVPixelBufferGetWidthOfPlane(imageBuffer,plane);
     size_t height = CVPixelBufferGetHeightOfPlane(imageBuffer,plane);
@@ -117,20 +118,17 @@
         _chromaTextureInputHeight = height;
     }
 
-    CVMetalTextureRef cvTexture;
     CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                  textureCache,
+                                                  _textureCache,
                                                   imageBuffer,
                                                   nil,
                                               format,
                                                   width,
                                                   height,
                                               plane,
-                                              &cvTexture);
+                                              &_cvTexture);
     
-    id<MTLTexture> result = CVMetalTextureGetTexture(cvTexture);
-    CVBufferRelease(cvTexture);
-    return result;
+    return CVMetalTextureGetTexture(_cvTexture);
 }
 - (void) updateFrameTexture:(nonnull CVImageBufferRef) buffer;
 {
@@ -154,12 +152,40 @@
             Log(LOG_E, @"Unsupport pixel format");
             return;
     }
-    id<MTLTexture> luma = [self texture:buffer withPlane:0 formatIn:lumaPixelFormat];
-    id<MTLTexture> chroma = [self texture:buffer withPlane:1 formatIn:chromaPixelFormat];
+    
+    if (_textureCache == nil) {
+        CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, _device, nil, &_textureCache);
+    }
+    
+    _lumaTextureInputWidth = CVPixelBufferGetWidthOfPlane(buffer, 0);
+    _lumaTextureInputHeight = CVPixelBufferGetHeightOfPlane(buffer, 0);
+    _chromaTextureInputWidth = CVPixelBufferGetWidthOfPlane(buffer, 1);
+    _chromaTextureInputHeight = CVPixelBufferGetHeightOfPlane(buffer, 1);
     
     
-    _lumaTexture = luma;
-    _chromaTexture = chroma;
+    CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                              _textureCache,
+                                              buffer,
+                                              nil,
+                                              lumaPixelFormat,
+                                              _lumaTextureInputWidth,
+                                              _lumaTextureInputHeight,
+                                              0,
+                                              &_cvTexture);
+    _lumaTexture = CVMetalTextureGetTexture(_cvTexture);
+    CVBufferRelease(_cvTexture);
+    
+    CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                              _textureCache,
+                                              buffer,
+                                              nil,
+                                              chromaPixelFormat,
+                                              _chromaTextureInputWidth,
+                                              _chromaTextureInputHeight,
+                                              1,
+                                              &_cvTexture);
+    _chromaTexture = CVMetalTextureGetTexture(_cvTexture);
+    CVBufferRelease(_cvTexture);
     
     [self updateMetalFx];
 }
